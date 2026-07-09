@@ -1,0 +1,17 @@
+import type { FastifyInstance } from 'fastify';
+
+/**
+ * Liveness and readiness endpoints. Autoloaded because the filename matches
+ * `*.route.ts`. Kept dependency-free so liveness reports the moment the process
+ * is up, independent of downstream services.
+ */
+export default async function healthRoute(app: FastifyInstance): Promise<void> {
+  const startedAt = Date.now();
+
+  app.get('/health', async () => ({
+    status: 'ok',
+    uptimeSeconds: Math.floor((Date.now() - startedAt) / 1000),
+  }));
+
+  app.get('/ready', async () => ({ status: 'ready' }));
+}

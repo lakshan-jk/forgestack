@@ -1,0 +1,49 @@
+# {{projectName}}
+
+{{#if description}}{{description}}
+
+{{/if}}Generated with [ForgeStack](https://github.com/forgestack) — a production-ready
+Fastify + TypeScript backend.
+
+## Stack
+
+{{#each modules}}- {{name}}
+{{/each}}
+
+## Getting started
+
+```bash
+{{packageManager}} install
+cp .env.example .env
+{{packageManager}} run dev
+```
+
+The server starts on `http://localhost:${PORT}` (default `3000`).
+
+## Scripts
+
+| Command | Description |
+|---------|-------------|
+| `{{packageManager}} run dev` | Start in watch mode (tsx) |
+| `{{packageManager}} run build` | Compile to `dist/` |
+| `{{packageManager}} run start` | Run the compiled server |
+| `{{packageManager}} run typecheck` | Strict type check |
+
+## Architecture
+
+```
+src/
+  config/     environment validation
+  plugins/    autoloaded, app-wide plugins (security, db, …)
+  modules/    feature slices; every *.route.ts is autoloaded
+  app.ts      builds the Fastify instance
+  server.ts   process entrypoint + graceful shutdown
+```
+
+Plugins in `src/plugins` and any `*.route.ts` in `src/modules` are registered
+automatically — add a file and it wires itself in.
+
+## Health
+
+- `GET /health` — liveness
+- `GET /ready` — readiness

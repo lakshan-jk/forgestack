@@ -1,0 +1,42 @@
+@import 'tailwindcss';
+
+/**
+ * ForgeStack design tokens. Dark-mode first — the light palette is a secondary
+ * concern for a developer tool. Tokens mirror the Linear/Railway/Vercel
+ * aesthetic: near-black surfaces, a single vivid accent, restrained borders.
+ */
+@theme {
+  --color-bg: #08090c;
+  --color-surface: #0f1116;
+  --color-surface-2: #161922;
+  --color-border: #23262f;
+  --color-fg: #f4f5f7;
+  --color-fg-muted: #9aa0ac;
+  --color-accent: #6d5efc;
+  --color-accent-fg: #ffffff;
+
+  --font-sans: ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-mono: ui-monospace, 'SF Mono', 'JetBrains Mono', Menlo, monospace;
+
+  --radius: 0.625rem;
+}
+
+html {
+  color-scheme: dark;
+}
+
+body {
+  background-color: var(--color-bg);
+  color: var(--color-fg);
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+/* Subtle grid backdrop reminiscent of Railway/Vercel marketing surfaces. */
+.bg-grid {
+  background-image:
+    linear-gradient(to right, rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+    linear-gradient(to bottom, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+  background-size: 44px 44px;
+}

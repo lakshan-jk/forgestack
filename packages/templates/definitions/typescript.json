@@ -1,0 +1,28 @@
+{
+  "id": "typescript",
+  "name": "TypeScript",
+  "description": "Strict TypeScript with tsx for dev and tsc for production builds.",
+  "category": "language",
+  "required": true,
+  "tags": ["typescript", "tsx", "build"],
+  "dependsOn": [],
+  "files": [
+    { "path": "tsconfig.json", "template": "typescript/tsconfig.json.hbs" },
+    { "path": "tsconfig.build.json", "template": "typescript/tsconfig.build.json.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": {},
+    "devDependencies": {
+      "typescript": "^5.7.2",
+      "tsx": "^4.19.2",
+      "@types/node": "^22.10.0"
+    },
+    "scripts": {
+      "build": "tsc -p tsconfig.build.json",
+      "typecheck": "tsc --noEmit"
+    },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["`pnpm typecheck` runs the strict type checker without emitting."]
+}

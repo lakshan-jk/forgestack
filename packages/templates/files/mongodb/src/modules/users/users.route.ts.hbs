@@ -1,0 +1,21 @@
+import type { FastifyInstance } from 'fastify';
+import { z } from 'zod';
+import { UserModel } from './user.model.js';
+
+const createUserBody = z.object({
+  email: z.string().email(),
+  name: z.string().min(1),
+});
+
+/** Sample CRUD route, autoloaded via the `*.route.ts` convention. */
+export default async function usersRoute(app: FastifyInstance): Promise<void> {
+  app.get('/users', async () => {
+    return UserModel.find().lean();
+  });
+
+  app.post('/users', async (request, reply) => {
+    const body = createUserBody.parse(request.body);
+    const user = await UserModel.create(body);
+    return reply.code(201).send(user);
+  });
+}

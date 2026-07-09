@@ -1,0 +1,18 @@
+import fp from 'fastify-plugin';
+import mongoose from 'mongoose';
+import { env } from '../config/env.js';
+
+/**
+ * Manages the Mongoose connection lifecycle as an app-wide plugin: connect on
+ * boot, disconnect on graceful shutdown. Wrapped with `fastify-plugin` so the
+ * connection is shared across the whole application.
+ */
+export default fp(async (app) => {
+  await mongoose.connect(env.MONGODB_URI);
+  app.log.info('MongoDB connected');
+
+  app.addHook('onClose', async () => {
+    await mongoose.disconnect();
+    app.log.info('MongoDB disconnected');
+  });
+});

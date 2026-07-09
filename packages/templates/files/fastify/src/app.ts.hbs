@@ -1,0 +1,48 @@
+import { join } from 'node:path';
+import { fileURLToPath } from 'node:url';
+import Fastify, { type FastifyInstance } from 'fastify';
+import autoload from '@fastify/autoload';
+import { env } from './config/env.js';
+
+const currentDir = fileURLToPath(new URL('.', import.meta.url));
+
+/**
+ * Builds the Fastify instance. Kept separate from `server.ts` so tests can
+ * construct an app without binding a port.
+ *
+ * Everything under `plugins/` is loaded app-wide; every `*.route.ts` under
+ * `modules/` is registered automatically. Adding a feature is just adding a
+ * file — no central wiring to edit.
+ */
+export async function buildApp(): Promise<FastifyInstance> {
+  const app = Fastify({
+    logger: {
+      level: env.LOG_LEVEL,
+      transport:
+        env.NODE_ENV === 'development'
+          ? {
+              target: 'pino-pretty',
+              options: { translateTime: 'HH:MM:ss', ignore: 'pid,hostname' },
+            }
+          : undefined,
+    },
+  });
+
+  // App-wide plugins (security, database, …). Not encapsulated so decorators
+  // and hooks apply to the whole application.
+  await app.register(autoload, {
+    dir: join(currentDir, 'plugins'),
+    encapsulate: false,
+  });
+
+  // Feature routes: any file named `*.route.ts` registers itself.
+  await app.register(autoload, {
+    dir: join(currentDir, 'modules'),
+    matchFilter: (path) => path.includes('.route.'),
+    dirNameRoutePrefix: false,
+  });
+
+  app.get('/', async () => ({ name: '{{projectName}}', status: 'ok' }));
+
+  return app;
+}

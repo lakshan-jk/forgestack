@@ -1,0 +1,37 @@
+{
+  "id": "mongodb",
+  "name": "MongoDB (Mongoose)",
+  "description": "Mongoose 8 connection managed as a Fastify plugin, with a sample User model and CRUD route.",
+  "category": "database",
+  "tags": ["mongodb", "mongoose", "database"],
+  "dependsOn": ["fastify"],
+  "conflictsWith": [],
+  "provides": ["database"],
+  "files": [
+    { "path": "src/plugins/mongoose.ts", "template": "mongodb/src/plugins/mongoose.ts.hbs" },
+    { "path": "src/modules/users/user.model.ts", "template": "mongodb/src/modules/users/user.model.ts.hbs" },
+    { "path": "src/modules/users/users.route.ts", "template": "mongodb/src/modules/users/users.route.ts.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": {
+      "mongoose": "^8.9.2"
+    },
+    "devDependencies": {},
+    "scripts": {},
+    "extra": {}
+  },
+  "env": [
+    {
+      "key": "MONGODB_URI",
+      "description": "MongoDB connection string",
+      "type": "string",
+      "required": true,
+      "secret": false,
+      "example": "mongodb://localhost:27017/app"
+    }
+  ],
+  "notes": [
+    "The Mongoose connection opens on boot and closes on graceful shutdown (onClose hook).",
+    "Sample endpoints: GET /users, POST /users."
+  ]
+}
