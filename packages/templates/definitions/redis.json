@@ -1,0 +1,29 @@
+{
+  "id": "redis",
+  "name": "Redis",
+  "description": "Shared Redis connection (ioredis) managed as a Fastify plugin; pings on boot, quits on shutdown.",
+  "category": "cache",
+  "tags": ["redis", "cache", "ioredis"],
+  "dependsOn": ["fastify"],
+  "provides": ["redis"],
+  "files": [
+    { "path": "src/lib/redis.ts", "template": "redis/src/lib/redis.ts.hbs" },
+    { "path": "src/plugins/redis.ts", "template": "redis/src/plugins/redis.ts.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": { "ioredis": "^5.4.2" },
+    "devDependencies": {},
+    "scripts": {},
+    "extra": {}
+  },
+  "env": [
+    {
+      "key": "REDIS_URL",
+      "description": "Redis connection string",
+      "type": "string",
+      "required": true,
+      "example": "redis://localhost:6379"
+    }
+  ],
+  "notes": ["A shared client is exported from `src/lib/redis.ts` for use by queues and workers."]
+}

@@ -1,0 +1,17 @@
+import fp from 'fastify-plugin';
+import fastifySwagger from '@fastify/swagger';
+import fastifySwaggerUi from '@fastify/swagger-ui';
+
+/**
+ * OpenAPI docs. Registered as a plugin so it loads before routes and can
+ * capture every registered endpoint. Browse the UI at /docs.
+ */
+export default fp(async (app) => {
+  await app.register(fastifySwagger, {
+    openapi: {
+      info: { title: '{{projectName}}', version: '0.1.0' },
+    },
+  });
+
+  await app.register(fastifySwaggerUi, { routePrefix: '/docs' });
+});

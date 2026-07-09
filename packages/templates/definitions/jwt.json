@@ -1,0 +1,40 @@
+{
+  "id": "jwt",
+  "name": "JWT Authentication",
+  "description": "JWT auth via @fastify/jwt — a login route that issues tokens and a protected route guarded by a reusable auth pre-handler.",
+  "category": "auth",
+  "tags": ["jwt", "auth", "authentication"],
+  "dependsOn": ["fastify"],
+  "provides": ["auth"],
+  "files": [
+    { "path": "src/plugins/jwt.ts", "template": "jwt/src/plugins/jwt.ts.hbs" },
+    { "path": "src/modules/auth/auth.route.ts", "template": "jwt/src/modules/auth/auth.route.ts.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": { "@fastify/jwt": "^9.0.3" },
+    "devDependencies": {},
+    "scripts": {},
+    "extra": {}
+  },
+  "env": [
+    {
+      "key": "JWT_SECRET",
+      "description": "Secret used to sign JWTs (use a long random value)",
+      "type": "string",
+      "required": true,
+      "secret": true,
+      "example": "replace-with-a-long-random-secret"
+    },
+    {
+      "key": "JWT_EXPIRES_IN",
+      "description": "Token lifetime (e.g. 15m, 1h, 7d)",
+      "type": "string",
+      "required": false,
+      "default": "1h"
+    }
+  ],
+  "notes": [
+    "POST /auth/login issues a token — wire it to your real user store.",
+    "GET /auth/me is protected; send `Authorization: Bearer <token>`."
+  ]
+}

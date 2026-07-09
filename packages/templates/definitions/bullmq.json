@@ -1,0 +1,26 @@
+{
+  "id": "bullmq",
+  "name": "BullMQ",
+  "description": "Background jobs with BullMQ — an example queue, a worker started on boot, and a route to enqueue jobs.",
+  "category": "queue",
+  "tags": ["bullmq", "jobs", "queue", "worker"],
+  "dependsOn": ["redis"],
+  "provides": ["queue"],
+  "files": [
+    { "path": "src/queues/example.queue.ts", "template": "bullmq/src/queues/example.queue.ts.hbs" },
+    { "path": "src/workers/example.worker.ts", "template": "bullmq/src/workers/example.worker.ts.hbs" },
+    { "path": "src/plugins/bullmq.ts", "template": "bullmq/src/plugins/bullmq.ts.hbs" },
+    { "path": "src/modules/jobs/jobs.route.ts", "template": "bullmq/src/modules/jobs/jobs.route.ts.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": { "bullmq": "^5.34.10" },
+    "devDependencies": {},
+    "scripts": {},
+    "extra": {}
+  },
+  "env": [],
+  "notes": [
+    "The worker starts with the server and stops on shutdown.",
+    "Enqueue a job: POST /jobs { \"message\": \"hello\" }."
+  ]
+}

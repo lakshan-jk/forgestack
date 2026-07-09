@@ -1,0 +1,14 @@
+import fp from 'fastify-plugin';
+import { redis } from '../lib/redis.js';
+
+/** Verifies the Redis connection on boot and closes it on graceful shutdown. */
+export default fp(async (app) => {
+  redis.on('error', (err) => app.log.error({ err }, 'Redis error'));
+  await redis.ping();
+  app.log.info('Redis connected');
+
+  app.addHook('onClose', async () => {
+    await redis.quit();
+    app.log.info('Redis disconnected');
+  });
+});

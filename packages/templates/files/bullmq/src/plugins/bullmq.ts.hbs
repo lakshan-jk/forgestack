@@ -1,0 +1,14 @@
+import fp from 'fastify-plugin';
+import { createExampleWorker } from '../workers/example.worker.js';
+
+/** Starts the BullMQ worker with the server and stops it on graceful shutdown. */
+export default fp(async (app) => {
+  const worker = createExampleWorker((message) => app.log.info(message));
+  worker.on('failed', (job, err) => app.log.error({ jobId: job?.id, err }, 'Job failed'));
+  app.log.info('BullMQ worker started');
+
+  app.addHook('onClose', async () => {
+    await worker.close();
+    app.log.info('BullMQ worker stopped');
+  });
+});

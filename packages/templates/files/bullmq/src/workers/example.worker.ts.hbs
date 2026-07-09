@@ -1,0 +1,17 @@
+import { Worker } from 'bullmq';
+import { redisConnection } from '../lib/redis.js';
+import type { ExampleJobData } from '../queues/example.queue.js';
+
+/**
+ * Creates the worker that processes the `example` queue. Logging is injected so
+ * the worker stays decoupled from Fastify.
+ */
+export function createExampleWorker(log: (message: string) => void): Worker<ExampleJobData> {
+  return new Worker<ExampleJobData>(
+    'example',
+    async (job) => {
+      log(`Processing job ${job.id}: ${job.data.message}`);
+    },
+    { connection: redisConnection },
+  );
+}

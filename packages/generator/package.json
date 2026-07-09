@@ -15,7 +15,8 @@
     "clean": "rm -rf dist .turbo *.tsbuildinfo"
   },
   "dependencies": {
-    "@forgestack/shared": "workspace:*"
+    "@forgestack/shared": "workspace:*",
+    "fflate": "^0.8.2"
   },
   "devDependencies": {
     "typescript": "^5.7.2",

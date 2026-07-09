@@ -7,6 +7,15 @@ const nextConfig: NextConfig = {
   experimental: {
     typedRoutes: true,
   },
+  // The shared package uses ESM-style `.js` import specifiers that resolve to
+  // `.ts` source. tsx/tsc handle this natively; webpack needs to be told.
+  webpack: (config) => {
+    config.resolve.extensionAlias = {
+      '.js': ['.ts', '.tsx', '.js'],
+      '.mjs': ['.mts', '.mjs'],
+    };
+    return config;
+  },
 };
 
 export default nextConfig;

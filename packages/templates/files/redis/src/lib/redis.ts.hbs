@@ -1,0 +1,22 @@
+import IORedis from 'ioredis';
+import { env } from '../config/env.js';
+
+/**
+ * The shared Redis connection, reused by plugins and general caching.
+ * `maxRetriesPerRequest: null` is required for BullMQ compatibility and is
+ * harmless for plain caching use.
+ */
+export const redis = new IORedis(env.REDIS_URL, { maxRetriesPerRequest: null });
+
+/**
+ * Plain connection options derived from REDIS_URL, for libraries like BullMQ.
+ * Passing options (rather than a client instance) sidesteps ioredis
+ * version-skew between the app and a library's bundled copy.
+ */
+const redisUrl = new URL(env.REDIS_URL);
+export const redisConnection = {
+  host: redisUrl.hostname,
+  port: redisUrl.port ? Number(redisUrl.port) : 6379,
+  ...(redisUrl.username ? { username: redisUrl.username } : {}),
+  ...(redisUrl.password ? { password: redisUrl.password } : {}),
+};

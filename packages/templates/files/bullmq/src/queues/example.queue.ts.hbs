@@ -1,0 +1,9 @@
+import { Queue } from 'bullmq';
+import { redisConnection } from '../lib/redis.js';
+
+export interface ExampleJobData {
+  message: string;
+}
+
+/** A sample queue. Producers add jobs; the worker consumes them. */
+export const exampleQueue = new Queue<ExampleJobData>('example', { connection: redisConnection });

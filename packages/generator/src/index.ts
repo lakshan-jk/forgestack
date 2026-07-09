@@ -5,3 +5,4 @@ export * from './render.js';
 export * from './source.js';
 export * from './compose.js';
 export * from './generate.js';
+export * from './zip.js';

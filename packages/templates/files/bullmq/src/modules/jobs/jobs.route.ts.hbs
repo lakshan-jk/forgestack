@@ -1,0 +1,14 @@
+import type { FastifyInstance } from 'fastify';
+import { z } from 'zod';
+import { exampleQueue } from '../../queues/example.queue.js';
+
+const enqueueBody = z.object({ message: z.string().min(1) });
+
+/** Sample route to enqueue a background job, autoloaded via `*.route.ts`. */
+export default async function jobsRoute(app: FastifyInstance): Promise<void> {
+  app.post('/jobs', async (request, reply) => {
+    const { message } = enqueueBody.parse(request.body);
+    const job = await exampleQueue.add('example', { message });
+    return reply.code(202).send({ jobId: job.id });
+  });
+}

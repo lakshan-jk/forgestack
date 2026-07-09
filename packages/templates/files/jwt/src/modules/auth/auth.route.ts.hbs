@@ -1,0 +1,29 @@
+import type { FastifyInstance, FastifyRequest, FastifyReply } from 'fastify';
+import { z } from 'zod';
+
+const loginBody = z.object({
+  email: z.string().email(),
+  password: z.string().min(1),
+});
+
+/** Reusable guard — rejects the request when no valid bearer token is present. */
+async function requireAuth(request: FastifyRequest, reply: FastifyReply): Promise<void> {
+  try {
+    await request.jwtVerify();
+  } catch {
+    await reply.code(401).send({ error: 'Unauthorized' });
+  }
+}
+
+export default async function authRoute(app: FastifyInstance): Promise<void> {
+  app.post('/auth/login', async (request) => {
+    const { email } = loginBody.parse(request.body);
+    // TODO: verify credentials against your user store before issuing a token.
+    const token = app.jwt.sign({ sub: email });
+    return { token };
+  });
+
+  app.get('/auth/me', { preHandler: requireAuth }, async (request) => {
+    return { user: request.user };
+  });
+}

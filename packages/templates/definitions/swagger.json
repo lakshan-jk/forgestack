@@ -1,0 +1,21 @@
+{
+  "id": "swagger",
+  "name": "Swagger / OpenAPI",
+  "description": "Interactive OpenAPI documentation served at /docs via @fastify/swagger and @fastify/swagger-ui.",
+  "category": "docs",
+  "tags": ["swagger", "openapi", "docs"],
+  "dependsOn": ["fastify"],
+  "provides": ["docs"],
+  "files": [{ "path": "src/plugins/swagger.ts", "template": "swagger/src/plugins/swagger.ts.hbs" }],
+  "packageJson": {
+    "dependencies": {
+      "@fastify/swagger": "^9.4.2",
+      "@fastify/swagger-ui": "^5.2.1"
+    },
+    "devDependencies": {},
+    "scripts": {},
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Browse the API at http://localhost:${PORT}/docs once the server is running."]
+}
