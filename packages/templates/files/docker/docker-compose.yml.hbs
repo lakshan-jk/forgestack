@@ -1,0 +1,34 @@
+services:
+  app:
+    build: .
+    ports:
+      - '3000:3000'
+    env_file:
+      - .env
+    environment:
+      NODE_ENV: production
+{{#if moduleFlags.mongodb}}      MONGODB_URI: mongodb://mongo:27017/{{projectName}}
+{{/if}}{{#if moduleFlags.redis}}      REDIS_URL: redis://redis:6379
+{{/if}}{{#if moduleFlags.mongodb}}    depends_on:
+      - mongo
+{{#if moduleFlags.redis}}      - redis
+{{/if}}{{/if}}{{#unless moduleFlags.mongodb}}{{#if moduleFlags.redis}}    depends_on:
+      - redis
+{{/if}}{{/unless}}
+{{#if moduleFlags.mongodb}}  mongo:
+    image: mongo:7
+    restart: unless-stopped
+    ports:
+      - '27017:27017'
+    volumes:
+      - mongo-data:/data/db
+
+{{/if}}{{#if moduleFlags.redis}}  redis:
+    image: redis:7-alpine
+    restart: unless-stopped
+    ports:
+      - '6379:6379'
+
+{{/if}}{{#if moduleFlags.mongodb}}volumes:
+  mongo-data:
+{{/if}}

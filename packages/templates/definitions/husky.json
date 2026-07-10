@@ -1,0 +1,20 @@
+{
+  "id": "husky",
+  "name": "Husky",
+  "description": "Git hooks via Husky — a pre-commit hook that type-checks staged work.",
+  "category": "quality",
+  "tags": ["husky", "git-hooks", "pre-commit"],
+  "dependsOn": ["typescript"],
+  "provides": ["git-hooks"],
+  "files": [
+    { "path": ".husky/pre-commit", "template": "husky/pre-commit.hbs", "executable": true }
+  ],
+  "packageJson": {
+    "dependencies": {},
+    "devDependencies": { "husky": "^9.1.7" },
+    "scripts": { "prepare": "husky" },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Hooks install automatically on `install` via the `prepare` script (requires a git repo)."]
+}

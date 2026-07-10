@@ -1,0 +1,22 @@
+{
+  "id": "eslint",
+  "name": "ESLint",
+  "description": "ESLint 9 flat config with typescript-eslint recommended rules.",
+  "category": "quality",
+  "tags": ["eslint", "lint"],
+  "dependsOn": ["typescript"],
+  "provides": ["lint"],
+  "files": [{ "path": "eslint.config.js", "template": "eslint/eslint.config.js.hbs" }],
+  "packageJson": {
+    "dependencies": {},
+    "devDependencies": {
+      "eslint": "^9.17.0",
+      "@eslint/js": "^9.17.0",
+      "typescript-eslint": "^8.19.0"
+    },
+    "scripts": { "lint": "eslint .", "lint:fix": "eslint . --fix" },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Run `{{packageManager}} run lint` to check, `lint:fix` to autofix."]
+}

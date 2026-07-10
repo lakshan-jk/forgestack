@@ -1,0 +1,17 @@
+{
+  "id": "docker",
+  "name": "Docker",
+  "description": "Multi-stage Dockerfile and a docker-compose stack that wires in Mongo/Redis when those modules are selected.",
+  "category": "devops",
+  "tags": ["docker", "container", "compose"],
+  "dependsOn": ["fastify"],
+  "provides": ["container"],
+  "files": [
+    { "path": "Dockerfile", "template": "docker/Dockerfile.hbs" },
+    { "path": ".dockerignore", "template": "docker/dockerignore.hbs" },
+    { "path": "docker-compose.yml", "template": "docker/docker-compose.yml.hbs" }
+  ],
+  "packageJson": { "dependencies": {}, "devDependencies": {}, "scripts": {}, "extra": {} },
+  "env": [],
+  "notes": ["Build & run everything: `docker compose up --build`."]
+}

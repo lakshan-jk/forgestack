@@ -1,0 +1,24 @@
+{
+  "id": "commitlint",
+  "name": "Commitlint",
+  "description": "Enforces Conventional Commits via a Husky commit-msg hook.",
+  "category": "quality",
+  "tags": ["commitlint", "conventional-commits", "git-hooks"],
+  "dependsOn": ["husky"],
+  "provides": ["commit-lint"],
+  "files": [
+    { "path": "commitlint.config.js", "template": "commitlint/commitlint.config.js.hbs" },
+    { "path": ".husky/commit-msg", "template": "commitlint/commit-msg.hbs", "executable": true }
+  ],
+  "packageJson": {
+    "dependencies": {},
+    "devDependencies": {
+      "@commitlint/cli": "^19.6.1",
+      "@commitlint/config-conventional": "^19.6.0"
+    },
+    "scripts": {},
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Commit messages must follow Conventional Commits (e.g. `feat: ...`, `fix: ...`)."]
+}

@@ -1,0 +1,34 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Enable Corepack
+        run: corepack enable
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+
+      - name: Install dependencies
+        run: {{packageManager}} install
+
+      - name: Type check
+        run: {{packageManager}} run typecheck
+{{#if moduleFlags.eslint}}
+      - name: Lint
+        run: {{packageManager}} run lint
+{{/if}}{{#if moduleFlags.prettier}}
+      - name: Format check
+        run: {{packageManager}} run format:check
+{{/if}}
+      - name: Build
+        run: {{packageManager}} run build

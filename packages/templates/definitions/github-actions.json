@@ -1,0 +1,15 @@
+{
+  "id": "github-actions",
+  "name": "GitHub Actions",
+  "description": "CI workflow that installs, type-checks, builds, and lints (when ESLint is present) on every push and PR.",
+  "category": "devops",
+  "tags": ["ci", "github", "actions"],
+  "dependsOn": ["typescript"],
+  "provides": ["ci"],
+  "files": [
+    { "path": ".github/workflows/ci.yml", "template": "github-actions/ci.yml.hbs" }
+  ],
+  "packageJson": { "dependencies": {}, "devDependencies": {}, "scripts": {}, "extra": {} },
+  "env": [],
+  "notes": ["The workflow runs on pushes to main and on pull requests."]
+}

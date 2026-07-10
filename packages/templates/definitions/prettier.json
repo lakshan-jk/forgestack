@@ -1,0 +1,21 @@
+{
+  "id": "prettier",
+  "name": "Prettier",
+  "description": "Opinionated code formatting with a shared Prettier config.",
+  "category": "quality",
+  "tags": ["prettier", "format"],
+  "dependsOn": [],
+  "provides": ["format"],
+  "files": [
+    { "path": ".prettierrc.json", "template": "prettier/prettierrc.json.hbs" },
+    { "path": ".prettierignore", "template": "prettier/prettierignore.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": {},
+    "devDependencies": { "prettier": "^3.4.2" },
+    "scripts": { "format": "prettier --write .", "format:check": "prettier --check ." },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Run `prettier --write .` to format the project."]
+}

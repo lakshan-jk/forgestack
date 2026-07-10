@@ -9,7 +9,6 @@ Fastify + TypeScript backend.
 
 {{#each modules}}- {{name}}
 {{/each}}
-
 ## Getting started
 
 ```bash
@@ -22,12 +21,10 @@ The server starts on `http://localhost:${PORT}` (default `3000`).
 
 ## Scripts
 
-| Command | Description |
-|---------|-------------|
-| `{{packageManager}} run dev` | Start in watch mode (tsx) |
-| `{{packageManager}} run build` | Compile to `dist/` |
-| `{{packageManager}} run start` | Run the compiled server |
-| `{{packageManager}} run typecheck` | Strict type check |
+- `{{packageManager}} run dev` — start in watch mode (tsx)
+- `{{packageManager}} run build` — compile to `dist/`
+- `{{packageManager}} run start` — run the compiled server
+- `{{packageManager}} run typecheck` — strict type check
 
 ## Architecture
 
