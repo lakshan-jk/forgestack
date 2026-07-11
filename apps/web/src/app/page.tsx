@@ -29,9 +29,9 @@ export default function HomePage() {
           </a>
           <a
             className="rounded-md bg-[var(--color-surface-2)] px-3 py-1.5 text-[var(--color-fg)] ring-1 ring-[var(--color-border)] transition-colors hover:bg-[var(--color-border)]"
-            href="/dashboard"
+            href="/signin"
           >
-            Dashboard
+            Sign in
           </a>
         </nav>
       </header>
