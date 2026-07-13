@@ -3,7 +3,7 @@
   "name": "Fastify",
   "description": "Fastify 5 server with autoloaded plugins/routes, env validation, structured logging, security middleware, health checks and graceful shutdown.",
   "category": "core",
-  "required": true,
+  "required": false,
   "tags": ["fastify", "http", "server"],
   "dependsOn": ["typescript"],
   "files": [

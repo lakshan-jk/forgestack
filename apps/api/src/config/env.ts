@@ -13,6 +13,14 @@ const EnvSchema = z.object({
   LOG_LEVEL: z
     .enum(['fatal', 'error', 'warn', 'info', 'debug', 'trace'])
     .default('info'),
+
+  // --- AI Stack Advisor ---
+  // Every provider has a local, keyless fallback so the advisor runs out of the box.
+  EMBEDDINGS_PROVIDER: z.enum(['local', 'huggingface', 'fake']).default('local'),
+  HF_TOKEN: z.string().optional(),
+  HF_EMBEDDING_MODEL: z.string().default('sentence-transformers/all-MiniLM-L6-v2'),
+  LOCAL_EMBEDDING_MODEL: z.string().default('Xenova/all-MiniLM-L6-v2'),
+  VECTOR_STORE: z.enum(['memory', 'atlas']).default('memory'),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

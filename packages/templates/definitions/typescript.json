@@ -3,7 +3,7 @@
   "name": "TypeScript",
   "description": "Strict TypeScript with tsx for dev and tsc for production builds.",
   "category": "language",
-  "required": true,
+  "required": false,
   "tags": ["typescript", "tsx", "build"],
   "dependsOn": [],
   "files": [

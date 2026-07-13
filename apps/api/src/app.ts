@@ -6,6 +6,7 @@ import { GeneratorError } from '@forgestack/generator';
 import { env, corsOrigins } from './config/env.js';
 import { healthRoutes } from './modules/health/health.route.js';
 import { generateRoutes } from './modules/generate/generate.route.js';
+import { advisorRoutes } from './modules/advisor/advisor.route.js';
 
 /**
  * Builds the Fastify instance. Kept separate from `server.ts` so tests can
@@ -44,11 +45,17 @@ export async function buildApp(): Promise<FastifyInstance> {
 
   await app.register(healthRoutes);
   await app.register(generateRoutes);
+  await app.register(advisorRoutes);
 
   app.get('/', async () => ({
     name: 'ForgeStack API',
     version: '0.1.0',
-    endpoints: ['GET /health', 'GET /api/modules', 'POST /api/generate'],
+    endpoints: [
+      'GET /health',
+      'GET /api/modules',
+      'POST /api/generate',
+      'POST /api/advisor',
+    ],
   }));
 
   return app;

@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useMemo } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useQuery, useMutation } from '@tanstack/react-query';
@@ -27,25 +27,14 @@ export default function DashboardPage() {
     resolver: zodResolver(GenerationRequest),
     defaultValues: { projectName: '', description: '', modules: [], packageManager: 'pnpm', options: {} },
   });
-  const { register, handleSubmit, watch, setValue, getValues, formState } = form;
+  const { register, handleSubmit, watch, setValue, formState } = form;
 
   const selectedModules = watch('modules') ?? [];
   const packageManager = watch('packageManager');
 
-  // Seed and lock the required modules once the catalog loads.
-  useEffect(() => {
-    if (!modules) return;
-    const current = new Set(getValues('modules'));
-    let changed = false;
-    for (const m of modules) {
-      if (m.required && !current.has(m.id)) {
-        current.add(m.id);
-        changed = true;
-      }
-    }
-    if (changed) setValue('modules', [...current]);
-  }, [modules, getValues, setValue]);
-
+  // Nothing is auto-selected — the builder starts empty and the user chooses.
+  // Dependencies are still surfaced (as "dependency" hints) and resolved on the
+  // server at generate time.
   const selectedSet = useMemo(() => new Set(selectedModules), [selectedModules]);
   const expandedSet = useMemo(
     () => (modules ? expandSelection(selectedSet, modules) : new Set<string>()),
