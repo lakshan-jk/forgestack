@@ -14,6 +14,7 @@ import {
 } from '@/lib/api';
 import { expandSelection } from '@/lib/resolve';
 import { ModuleCard } from '@/components/dashboard/module-card';
+import { AdvisorPanel } from '@/components/dashboard/advisor-panel';
 import { cn } from '@/lib/cn';
 
 const CATEGORY_ORDER = ['language', 'core', 'database', 'cache', 'queue', 'auth', 'docs', 'security', 'observability', 'devops', 'quality'];
@@ -91,6 +92,11 @@ export default function DashboardPage() {
               />
             </Field>
           </section>
+
+          <AdvisorPanel
+            modules={modules ?? []}
+            onApply={(ids) => setValue('modules', ids, { shouldValidate: true, shouldDirty: true })}
+          />
 
           <section>
             <h2 className="mb-3 text-sm font-medium text-[var(--color-fg)]">Modules</h2>

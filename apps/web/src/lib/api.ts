@@ -23,6 +23,32 @@ export async function fetchModules(): Promise<ApiModule[]> {
   return data.modules;
 }
 
+export interface AdvisorSuggestion {
+  id: string;
+  name: string;
+  category: string;
+  score: number;
+}
+
+export interface AdvisorResponse {
+  prompt: string;
+  provider: string;
+  suggested: AdvisorSuggestion[];
+  /** The suggested modules expanded into a dependency-complete, ordered stack. */
+  resolvedStack: string[];
+}
+
+/** POST /api/advisor — natural-language prompt → suggested modules + stack. */
+export async function getAdvisorSuggestion(prompt: string): Promise<AdvisorResponse> {
+  const res = await fetch(`${API_URL}/api/advisor`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ prompt }),
+  });
+  if (!res.ok) throw new Error(`Advisor request failed (${res.status})`);
+  return (await res.json()) as AdvisorResponse;
+}
+
 export interface ValidationIssue {
   path: (string | number)[];
   message: string;
