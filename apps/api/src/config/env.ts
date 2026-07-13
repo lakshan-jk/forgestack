@@ -21,6 +21,11 @@ const EnvSchema = z.object({
   HF_EMBEDDING_MODEL: z.string().default('sentence-transformers/all-MiniLM-L6-v2'),
   LOCAL_EMBEDDING_MODEL: z.string().default('Xenova/all-MiniLM-L6-v2'),
   VECTOR_STORE: z.enum(['memory', 'atlas']).default('memory'),
+  MONGODB_ATLAS_URI: z.string().optional(),
+  ATLAS_DB: z.string().default('forgestack'),
+  ATLAS_COLLECTION: z.string().default('module_embeddings'),
+  ATLAS_VECTOR_INDEX: z.string().default('module_vector_index'),
+  EMBEDDING_DIMENSIONS: z.coerce.number().int().positive().default(384),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

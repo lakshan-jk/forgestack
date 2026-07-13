@@ -1,6 +1,7 @@
 import {
   StackAdvisor,
   MemoryVectorStore,
+  AtlasVectorStore,
   FakeEmbeddings,
   LocalEmbeddings,
   HfInferenceEmbeddings,
@@ -32,7 +33,19 @@ function createEmbeddings(): EmbeddingsProvider {
 }
 
 function createVectorStore(): VectorStore {
-  // Atlas store lands in a later phase; memory is the default and dev fallback.
+  if (env.VECTOR_STORE === 'atlas') {
+    if (!env.MONGODB_ATLAS_URI) {
+      throw new Error('VECTOR_STORE=atlas requires MONGODB_ATLAS_URI to be set.');
+    }
+    return new AtlasVectorStore({
+      uri: env.MONGODB_ATLAS_URI,
+      db: env.ATLAS_DB,
+      collection: env.ATLAS_COLLECTION,
+      indexName: env.ATLAS_VECTOR_INDEX,
+      dimensions: env.EMBEDDING_DIMENSIONS,
+    });
+  }
+  // In-memory is the default and the zero-dependency dev fallback.
   return new MemoryVectorStore();
 }
 
