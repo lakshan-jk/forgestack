@@ -13,7 +13,7 @@ import { env } from '../../config/env.js';
 export async function telemetryRoutes(app: FastifyInstance): Promise<void> {
   app.post('/api/telemetry', async (request, reply) => {
     const { events } = TelemetryBatch.parse(request.body);
-    for (const event of events) metrics.record(event);
+    for (const event of events) await metrics.record(event);
     return reply.code(204).send();
   });
 

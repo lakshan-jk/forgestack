@@ -1,0 +1,31 @@
+// ForgeStack usage metrics store.
+// SQLite by default (zero-config, runs anywhere) — switch `provider` to
+// "postgresql" and point DATABASE_URL at Postgres for production, no code change.
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// One row per anonymous install seen.
+model Install {
+  installId String   @id
+  firstSeen DateTime @default(now())
+  lastSeen  DateTime @updatedAt
+}
+
+/// Running count per event name (server.started, project.generated, …).
+model EventCount {
+  name  String @id
+  count Int    @default(0)
+}
+
+/// Running count per module across all generations.
+model ModuleUsage {
+  moduleId String @id
+  count    Int    @default(0)
+}

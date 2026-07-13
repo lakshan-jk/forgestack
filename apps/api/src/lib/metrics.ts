@@ -1,48 +1,60 @@
 import type { TelemetryEvent } from '@forgestack/telemetry';
+import { prisma } from './db.js';
 
 /**
- * In-memory usage aggregate. Phase A keeps counts in process memory; Phase B
- * swaps this for a durable store (Prisma/SQLite) behind the same shape.
+ * Durable usage aggregate backed by Prisma/SQLite. Counts are maintained as
+ * running totals (per install, per event name, per module) so a snapshot is a
+ * few indexed reads, and everything survives restarts.
  */
-class MetricsStore {
-  private totalEvents = 0;
-  private readonly eventsByName = new Map<string, number>();
-  private readonly moduleCounts = new Map<string, number>();
-  private readonly installs = new Set<string>();
-  private generations = 0;
-  private advisorRuns = 0;
+export const metrics = {
+  async record(event: TelemetryEvent): Promise<void> {
+    await prisma.install.upsert({
+      where: { installId: event.installId },
+      create: { installId: event.installId },
+      update: { lastSeen: new Date() },
+    });
 
-  record(event: TelemetryEvent): void {
-    this.totalEvents += 1;
-    this.installs.add(event.installId);
-    this.eventsByName.set(event.name, (this.eventsByName.get(event.name) ?? 0) + 1);
+    await prisma.eventCount.upsert({
+      where: { name: event.name },
+      create: { name: event.name, count: 1 },
+      update: { count: { increment: 1 } },
+    });
 
     if (event.name === 'project.generated') {
-      this.generations += 1;
       const modules = event.properties?.modules;
       if (Array.isArray(modules)) {
-        for (const id of modules) this.moduleCounts.set(id, (this.moduleCounts.get(id) ?? 0) + 1);
+        await Promise.all(
+          modules.map((moduleId) =>
+            prisma.moduleUsage.upsert({
+              where: { moduleId },
+              create: { moduleId, count: 1 },
+              update: { count: { increment: 1 } },
+            }),
+          ),
+        );
       }
     }
-    if (event.name === 'advisor.used') this.advisorRuns += 1;
-  }
+  },
 
-  snapshot() {
-    const topModules = [...this.moduleCounts.entries()]
-      .map(([id, count]) => ({ id, count }))
-      .sort((a, b) => b.count - a.count)
-      .slice(0, 10);
+  async snapshot() {
+    const [uniqueInstalls, eventCounts, topModules] = await Promise.all([
+      prisma.install.count(),
+      prisma.eventCount.findMany(),
+      prisma.moduleUsage.findMany({ orderBy: { count: 'desc' }, take: 10 }),
+    ]);
+
+    const eventsByName = Object.fromEntries(eventCounts.map((e) => [e.name, e.count]));
+    const totalEvents = eventCounts.reduce((sum, e) => sum + e.count, 0);
 
     return {
-      totalEvents: this.totalEvents,
-      uniqueInstalls: this.installs.size,
-      generations: this.generations,
-      advisorRuns: this.advisorRuns,
-      eventsByName: Object.fromEntries(this.eventsByName),
-      topModules,
+      totalEvents,
+      uniqueInstalls,
+      generations: eventsByName['project.generated'] ?? 0,
+      advisorRuns: eventsByName['advisor.used'] ?? 0,
+      eventsByName,
+      topModules: topModules.map((m) => ({ id: m.moduleId, count: m.count })),
     };
-  }
-}
+  },
+};
 
-export const metrics = new MetricsStore();
-export type MetricsSnapshot = ReturnType<MetricsStore['snapshot']>;
+export type MetricsSnapshot = Awaited<ReturnType<typeof metrics.snapshot>>;

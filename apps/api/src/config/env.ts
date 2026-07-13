@@ -35,6 +35,10 @@ const EnvSchema = z.object({
   TELEMETRY_ENDPOINT: z.string().optional(),
   // Shared secret to read GET /api/metrics. When set, the endpoint requires it.
   METRICS_TOKEN: z.string().optional(),
+
+  // --- Persistence ---
+  // SQLite by default; point at Postgres (and update schema.prisma) for prod.
+  DATABASE_URL: z.string().default('file:./forgestack.db'),
 });
 
 export type Env = z.infer<typeof EnvSchema>;
