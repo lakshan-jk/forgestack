@@ -49,6 +49,29 @@ export async function getAdvisorSuggestion(prompt: string): Promise<AdvisorRespo
   return (await res.json()) as AdvisorResponse;
 }
 
+export interface MetricsSnapshot {
+  totalEvents: number;
+  uniqueInstalls: number;
+  generations: number;
+  advisorRuns: number;
+  eventsByName: Record<string, number>;
+  topModules: { id: string; count: number }[];
+}
+
+/** GET /api/metrics (admin only). Pass the shared METRICS_TOKEN server-side. */
+export async function getMetrics(token?: string): Promise<MetricsSnapshot | null> {
+  try {
+    const res = await fetch(`${API_URL}/api/metrics`, {
+      headers: token ? { Authorization: `Bearer ${token}` } : {},
+      cache: 'no-store',
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as MetricsSnapshot;
+  } catch {
+    return null;
+  }
+}
+
 export interface ValidationIssue {
   path: (string | number)[];
   message: string;

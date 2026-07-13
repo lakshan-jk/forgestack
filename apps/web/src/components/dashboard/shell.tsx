@@ -3,26 +3,29 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Plus, Boxes, Settings, CreditCard } from 'lucide-react';
+import { LayoutDashboard, Plus, Boxes, BarChart3, Settings, CreditCard } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { SignOutButton } from './sign-out-button';
 
 const NAV = [
-  { href: '/dashboard', label: 'Overview', icon: LayoutDashboard, exact: true },
-  { href: '/dashboard/new', label: 'New project', icon: Plus, exact: false },
-  { href: '/dashboard/templates', label: 'Templates', icon: Boxes, exact: false },
-  { href: '/dashboard/settings', label: 'Settings', icon: Settings, exact: false },
-  { href: '/dashboard/billing', label: 'Billing', icon: CreditCard, exact: false },
+  { href: '/dashboard', label: 'Overview', icon: LayoutDashboard, exact: true, adminOnly: false },
+  { href: '/dashboard/new', label: 'New project', icon: Plus, exact: false, adminOnly: false },
+  { href: '/dashboard/templates', label: 'Templates', icon: Boxes, exact: false, adminOnly: false },
+  { href: '/dashboard/metrics', label: 'Metrics', icon: BarChart3, exact: false, adminOnly: true },
+  { href: '/dashboard/settings', label: 'Settings', icon: Settings, exact: false, adminOnly: false },
+  { href: '/dashboard/billing', label: 'Billing', icon: CreditCard, exact: false, adminOnly: false },
 ] as const;
 
 interface ShellProps {
   user: { name?: string | null; email?: string | null };
+  isAdmin: boolean;
   children: ReactNode;
 }
 
-export function Shell({ user, children }: ShellProps) {
+export function Shell({ user, isAdmin, children }: ShellProps) {
   const pathname = usePathname();
   const initial = (user.name ?? user.email ?? 'U').charAt(0).toUpperCase();
+  const nav = NAV.filter((item) => !item.adminOnly || isAdmin);
 
   return (
     <div className="flex min-h-screen">
@@ -35,7 +38,7 @@ export function Shell({ user, children }: ShellProps) {
         </Link>
 
         <nav className="flex-1 space-y-0.5 px-3">
-          {NAV.map((item) => {
+          {nav.map((item) => {
             const active = item.exact ? pathname === item.href : pathname.startsWith(item.href);
             const Icon = item.icon;
             return (

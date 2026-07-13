@@ -1,3 +1,4 @@
+import 'dotenv/config';
 import { z } from 'zod';
 
 /**
@@ -26,6 +27,14 @@ const EnvSchema = z.object({
   ATLAS_COLLECTION: z.string().default('module_embeddings'),
   ATLAS_VECTOR_INDEX: z.string().default('module_vector_index'),
   EMBEDDING_DIMENSIONS: z.coerce.number().int().positive().default(384),
+
+  // --- Anonymous telemetry (opt-out) ---
+  // Disable entirely with FORGESTACK_TELEMETRY_DISABLED=1
+  FORGESTACK_TELEMETRY_DISABLED: z.string().optional(),
+  // Collector URL. Defaults to this instance's own /api/telemetry.
+  TELEMETRY_ENDPOINT: z.string().optional(),
+  // Shared secret to read GET /api/metrics. When set, the endpoint requires it.
+  METRICS_TOKEN: z.string().optional(),
 });
 
 export type Env = z.infer<typeof EnvSchema>;

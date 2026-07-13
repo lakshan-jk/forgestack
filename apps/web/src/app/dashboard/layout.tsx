@@ -1,6 +1,7 @@
 import type { ReactNode } from 'react';
 import { redirect } from 'next/navigation';
 import { auth } from '@/auth';
+import { isAdminEmail } from '@/lib/users';
 import { Shell } from '@/components/dashboard/shell';
 
 /**
@@ -13,6 +14,11 @@ export default async function DashboardLayout({ children }: { children: ReactNod
   if (!session?.user) redirect('/signin');
 
   return (
-    <Shell user={{ name: session.user.name, email: session.user.email }}>{children}</Shell>
+    <Shell
+      user={{ name: session.user.name, email: session.user.email }}
+      isAdmin={isAdminEmail(session.user.email)}
+    >
+      {children}
+    </Shell>
   );
 }

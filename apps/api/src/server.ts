@@ -1,5 +1,7 @@
+import { TelemetryEventName } from '@forgestack/telemetry';
 import { buildApp } from './app.js';
 import { env } from './config/env.js';
+import { telemetry, telemetryEnabled } from './lib/telemetry.js';
 
 /**
  * Process entrypoint: build the app, bind the port, and wire graceful shutdown.
@@ -26,6 +28,12 @@ async function main(): Promise<void> {
 
   try {
     await app.listen({ host: env.HOST, port: env.PORT });
+    if (telemetryEnabled) {
+      app.log.info(
+        'Anonymous usage telemetry is on. Opt out with FORGESTACK_TELEMETRY_DISABLED=1 (see docs/telemetry.md).',
+      );
+      telemetry.track(TelemetryEventName.ServerStarted);
+    }
   } catch (err) {
     app.log.error(err, 'Failed to start server');
     process.exit(1);

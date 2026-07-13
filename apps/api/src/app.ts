@@ -7,6 +7,7 @@ import { env, corsOrigins } from './config/env.js';
 import { healthRoutes } from './modules/health/health.route.js';
 import { generateRoutes } from './modules/generate/generate.route.js';
 import { advisorRoutes } from './modules/advisor/advisor.route.js';
+import { telemetryRoutes } from './modules/telemetry/telemetry.route.js';
 
 /**
  * Builds the Fastify instance. Kept separate from `server.ts` so tests can
@@ -46,6 +47,7 @@ export async function buildApp(): Promise<FastifyInstance> {
   await app.register(healthRoutes);
   await app.register(generateRoutes);
   await app.register(advisorRoutes);
+  await app.register(telemetryRoutes);
 
   app.get('/', async () => ({
     name: 'ForgeStack API',
@@ -55,6 +57,7 @@ export async function buildApp(): Promise<FastifyInstance> {
       'GET /api/modules',
       'POST /api/generate',
       'POST /api/advisor',
+      'GET /api/metrics',
     ],
   }));
 

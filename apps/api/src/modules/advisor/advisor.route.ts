@@ -1,8 +1,10 @@
 import type { FastifyInstance } from 'fastify';
 import { z } from 'zod';
 import { resolveModules } from '@forgestack/generator';
+import { TelemetryEventName } from '@forgestack/telemetry';
 import { registry } from '../../lib/generator.js';
 import { advisor, ensureIndexed, embeddingsProviderId } from '../../lib/advisor.js';
+import { telemetry } from '../../lib/telemetry.js';
 
 const advisorBody = z.object({
   prompt: z.string().min(1).max(500),
@@ -39,6 +41,12 @@ export async function advisorRoutes(app: FastifyInstance): Promise<void> {
       );
       resolvedStack = ordered.map((o) => o.module.id);
     }
+
+    // Anonymous: that the advisor ran and how many matches, not the prompt text.
+    telemetry.track(TelemetryEventName.AdvisorUsed, {
+      provider: embeddingsProviderId,
+      matches: suggested.length,
+    });
 
     return { prompt, provider: embeddingsProviderId, suggested, resolvedStack };
   });

@@ -38,9 +38,15 @@ importers:
       '@forgestack/shared':
         specifier: workspace:*
         version: link:../../packages/shared
+      '@forgestack/telemetry':
+        specifier: workspace:*
+        version: link:../../packages/telemetry
       '@forgestack/templates':
         specifier: workspace:*
         version: link:../../packages/templates
+      dotenv:
+        specifier: ^16.4.7
+        version: 16.6.1
       fastify:
         specifier: ^5.2.0
         version: 5.10.0
@@ -163,6 +169,19 @@ importers:
       typescript:
         specifier: ^5.7.2
         version: 5.9.3
+
+  packages/telemetry:
+    dependencies:
+      zod:
+        specifier: ^3.24.1
+        version: 3.25.76
+    devDependencies:
+      typescript:
+        specifier: ^5.7.2
+        version: 5.9.3
+      vitest:
+        specifier: ^2.1.8
+        version: 2.1.9(@types/node@22.20.1)(lightningcss@1.32.0)
 
   packages/templates:
     dependencies:
@@ -1319,6 +1338,10 @@ packages:
 
   detect-node@2.1.0:
     resolution: {integrity: sha512-T0NIuQpnTvFDATNuHN5roPwSBG83rFsuO+MXXH9/3N1eFbn4wcPjttvjMLEPWJ0RGUYgQE7cGgS3tNxbqCGM7g==}
+
+  dotenv@16.6.1:
+    resolution: {integrity: sha512-uBq4egWHTcTt33a72vpSG0z3HnPuIl6NqYcTrKEg2azoEyl2hpW0zqlxysq2pK9HlDIHyHyakeYaYnSAwd8bow==}
+    engines: {node: '>=12'}
 
   end-of-stream@1.4.5:
     resolution: {integrity: sha512-ooEGc6HP26xXq/N+GCGOT0JKCLDGrq2bQUZrQ7gyrJiZANJ/8YDTxTpQBXGMn+WbIQXNVpyWymm7KYVICQnyOg==}
@@ -2831,6 +2854,8 @@ snapshots:
   detect-libc@2.1.2: {}
 
   detect-node@2.1.0: {}
+
+  dotenv@16.6.1: {}
 
   end-of-stream@1.4.5:
     dependencies:

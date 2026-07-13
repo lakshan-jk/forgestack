@@ -1,6 +1,8 @@
 import type { FastifyInstance } from 'fastify';
 import { generateProject, zipProject } from '@forgestack/generator';
+import { TelemetryEventName } from '@forgestack/telemetry';
 import { registry, templates } from '../../lib/generator.js';
+import { telemetry } from '../../lib/telemetry.js';
 
 /**
  * The generation API — the product's core deliverable.
@@ -29,6 +31,12 @@ export async function generateRoutes(app: FastifyInstance): Promise<void> {
     // invalid input throws and is mapped to a 400 by the global error handler.
     const result = generateProject(request.body, { registry, templates });
     const archive = zipProject(result);
+
+    // Anonymous: which modules, not who or what they named it.
+    telemetry.track(TelemetryEventName.ProjectGenerated, {
+      modules: result.resolvedModules,
+      moduleCount: result.resolvedModules.length,
+    });
 
     return reply
       .header('Content-Type', 'application/zip')
