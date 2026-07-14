@@ -20,6 +20,7 @@ export const ModuleCategory = z.enum([
   'cache', // redis
   'queue', // bullmq
   'ai', // llm, embeddings, vector store, rag
+  'ui', // styling: tailwind
   'docs', // swagger
   'observability', // pino, health checks, metrics
   'security', // helmet, cors, rate-limit
@@ -100,6 +101,12 @@ export const ModuleDefinition = z.object({
 
   /** Modules that must be present for this one to function (auto-included). */
   dependsOn: z.array(z.string()).default([]),
+  /**
+   * At least one of these must be present, but none is auto-included — the user
+   * must have chosen one. For cross-framework add-ons (e.g. Tailwind requires
+   * one of react/next/vite). Empty = no requirement.
+   */
+  requiresOneOf: z.array(z.string()).default([]),
   /** Modules that cannot coexist with this one (hard error if both selected). */
   conflictsWith: z.array(z.string()).default([]),
   /** Capability tags this module satisfies (used for "requires a database" gates). */

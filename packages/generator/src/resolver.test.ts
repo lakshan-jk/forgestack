@@ -5,12 +5,13 @@ import {
   DependencyCycleError,
   ModuleConflictError,
   UnknownModuleError,
+  UnsatisfiedRequirementError,
 } from './errors.js';
 
 /** Minimal module factory for tests — only the fields the resolver cares about. */
 const mod = (
   id: string,
-  opts: Partial<{ dependsOn: string[]; conflictsWith: string[] }> = {},
+  opts: Partial<{ dependsOn: string[]; conflictsWith: string[]; requiresOneOf: string[] }> = {},
 ) => ({
   id,
   name: id,
@@ -18,6 +19,7 @@ const mod = (
   category: 'core' as const,
   dependsOn: opts.dependsOn ?? [],
   conflictsWith: opts.conflictsWith ?? [],
+  requiresOneOf: opts.requiresOneOf ?? [],
 });
 
 const ids = (r: ReturnType<typeof resolveModules>) => r.ordered.map((m) => m.module.id);
@@ -70,6 +72,16 @@ describe('resolveModules', () => {
       mod('needs-prisma', { dependsOn: ['prisma'] }),
     ]);
     expect(() => resolveModules(['mongoose', 'needs-prisma'], reg)).toThrow(ModuleConflictError);
+  });
+
+  it('requiresOneOf: allowed when one is present, rejected when none', () => {
+    const reg = ModuleRegistry.from([
+      mod('react'),
+      mod('next'),
+      mod('tailwind', { requiresOneOf: ['react', 'next', 'vite'] }),
+    ]);
+    expect(() => resolveModules(['tailwind', 'react'], reg)).not.toThrow();
+    expect(() => resolveModules(['tailwind'], reg)).toThrow(UnsatisfiedRequirementError);
   });
 
   it('throws DependencyCycleError on a cyclic graph', () => {

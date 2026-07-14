@@ -1,0 +1,10 @@
+import { Body, Controller, Post } from '@nestjs/common';
+import { CreateItemDto } from './dto/create-item.dto';
+
+@Controller('items')
+export class ItemsController {
+  @Post()
+  create(@Body() dto: CreateItemDto): { created: CreateItemDto } {
+    return { created: dto };
+  }
+}

@@ -4,6 +4,7 @@ import {
   DependencyCycleError,
   ModuleConflictError,
   UnknownModuleError,
+  UnsatisfiedRequirementError,
 } from './errors.js';
 
 export interface ResolvedModule {
@@ -59,6 +60,15 @@ export function resolveModules(
         const [a, b] = [id, other].sort();
         throw new ModuleConflictError(a!, b!);
       }
+    }
+  }
+
+  // 2b. "requires one of" — the module needs at least one listed module present
+  //     (not auto-included; the user must have chosen one).
+  for (const id of included) {
+    const mod = registry.require(id);
+    if (mod.requiresOneOf.length > 0 && !mod.requiresOneOf.some((r) => included.has(r))) {
+      throw new UnsatisfiedRequirementError(id, mod.requiresOneOf);
     }
   }
 

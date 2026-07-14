@@ -11,6 +11,7 @@ const CATEGORY_ORDER = [
   'cache',
   'queue',
   'ai',
+  'ui',
   'auth',
   'docs',
   'security',

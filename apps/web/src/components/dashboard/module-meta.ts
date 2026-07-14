@@ -11,6 +11,7 @@ import {
   Container,
   Wrench,
   Component,
+  Palette,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -28,6 +29,7 @@ const CATEGORY: Record<string, CategoryMeta> = {
   cache: { icon: Zap, color: '#ff6b6b' },
   queue: { icon: Layers, color: '#f7c948' },
   ai: { icon: Sparkles, color: '#b06bff' },
+  ui: { icon: Palette, color: '#22d3ee' },
   auth: { icon: KeyRound, color: '#ffa94d' },
   docs: { icon: BookOpen, color: '#5aa2ff' },
   security: { icon: ShieldCheck, color: '#63e6be' },

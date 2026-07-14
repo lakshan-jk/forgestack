@@ -28,6 +28,19 @@ export class ModuleConflictError extends GeneratorError {
   }
 }
 
+export class UnsatisfiedRequirementError extends GeneratorError {
+  constructor(
+    public readonly moduleId: string,
+    public readonly requiresOneOf: string[],
+  ) {
+    super(
+      'UNSATISFIED_REQUIREMENT',
+      `Module "${moduleId}" requires one of: ${requiresOneOf.join(', ')}. Select one of them.`,
+    );
+    this.name = 'UnsatisfiedRequirementError';
+  }
+}
+
 export class DependencyCycleError extends GeneratorError {
   constructor(public readonly cycle: string[]) {
     super('DEPENDENCY_CYCLE', `Dependency cycle detected: ${cycle.join(' → ')}.`);

@@ -1,0 +1,29 @@
+{
+  "id": "nest-essentials",
+  "name": "Nest essentials",
+  "description": "Production add-ons for the NestJS starter: @nestjs/config, global validation (class-validator) and Swagger docs at /docs.",
+  "category": "quality",
+  "tags": ["nestjs", "config", "validation", "swagger"],
+  "dependsOn": ["nest"],
+  "provides": ["config", "validation", "docs"],
+  "files": [
+    { "path": "src/main.ts", "template": "nest-essentials/src/main.ts.hbs" },
+    { "path": "src/app.module.ts", "template": "nest-essentials/src/app.module.ts.hbs" },
+    { "path": "src/items/items.module.ts", "template": "nest-essentials/src/items/items.module.ts.hbs" },
+    { "path": "src/items/items.controller.ts", "template": "nest-essentials/src/items/items.controller.ts.hbs" },
+    { "path": "src/items/dto/create-item.dto.ts", "template": "nest-essentials/src/items/dto/create-item.dto.ts.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": {
+      "@nestjs/config": "^3.3.0",
+      "@nestjs/swagger": "^8.1.1",
+      "class-validator": "^0.14.1",
+      "class-transformer": "^0.5.1"
+    },
+    "devDependencies": {},
+    "scripts": {},
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Swagger UI at http://localhost:3000/docs. POST /items validates its body."]
+}
