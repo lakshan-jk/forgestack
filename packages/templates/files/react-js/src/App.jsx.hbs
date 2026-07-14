@@ -1,0 +1,14 @@
+import { useState } from 'react';
+
+export default function App() {
+  const [count, setCount] = useState(0);
+  return (
+    <main className="app">
+      <h1>{{projectName}}</h1>
+      <p>Generated with ForgeStack — React + Vite (JavaScript).</p>
+      <button type="button" onClick={() => setCount((c) => c + 1)}>
+        count is {count}
+      </button>
+    </main>
+  );
+}

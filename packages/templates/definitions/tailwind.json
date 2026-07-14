@@ -5,13 +5,16 @@
   "category": "ui",
   "tags": ["tailwind", "css", "styling", "frontend"],
   "dependsOn": [],
-  "requiresOneOf": ["react", "next", "vite"],
+  "requiresOneOf": ["react", "next", "vite", "react-js", "next-js"],
   "files": [
     { "path": "postcss.config.mjs", "template": "tailwind/postcss.config.mjs.hbs" },
     { "path": "src/index.css", "content": "@import 'tailwindcss';\n\n", "merge": "prepend", "whenModule": "react" },
+    { "path": "src/index.css", "content": "@import 'tailwindcss';\n\n", "merge": "prepend", "whenModule": "react-js" },
     { "path": "src/style.css", "content": "@import 'tailwindcss';\n\n", "merge": "prepend", "whenModule": "vite" },
     { "path": "src/app/globals.css", "content": "@import 'tailwindcss';\n", "whenModule": "next" },
-    { "path": "src/app/layout.tsx", "content": "import './globals.css';\n", "merge": "prepend", "whenModule": "next" }
+    { "path": "src/app/layout.tsx", "content": "import './globals.css';\n", "merge": "prepend", "whenModule": "next" },
+    { "path": "src/app/globals.css", "content": "@import 'tailwindcss';\n", "whenModule": "next-js" },
+    { "path": "src/app/layout.jsx", "content": "import './globals.css';\n", "merge": "prepend", "whenModule": "next-js" }
   ],
   "packageJson": {
     "dependencies": {},

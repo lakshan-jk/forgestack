@@ -1,7 +1,7 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { API_URL, type ApiModule } from '@/lib/api';
-import { categoryMeta } from '@/components/dashboard/module-meta';
+import { moduleMeta } from '@/components/dashboard/module-meta';
 
 const CATEGORY_ORDER = [
   'framework',
@@ -93,7 +93,7 @@ export default async function TemplatesPage() {
 }
 
 function TemplateCard({ module }: { module: ApiModule }) {
-  const meta = categoryMeta(module.category);
+  const meta = moduleMeta(module.id, module.category);
   const Icon = meta.icon;
   return (
     <div className="flex min-h-[76px] items-start gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3.5">

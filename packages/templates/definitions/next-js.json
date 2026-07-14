@@ -1,0 +1,24 @@
+{
+  "id": "next-js",
+  "name": "Next.js (JavaScript)",
+  "description": "A Next.js 15 (App Router) full-stack React starter in plain JavaScript (JSX) — no TypeScript.",
+  "category": "framework",
+  "tags": ["nextjs", "react", "javascript", "fullstack"],
+  "dependsOn": [],
+  "conflictsWith": ["fastify", "typescript", "nest", "next", "react", "vite", "react-js"],
+  "files": [
+    { "path": "src/app/layout.jsx", "template": "next-js/src/app/layout.jsx.hbs" },
+    { "path": "src/app/page.jsx", "template": "next-js/src/app/page.jsx.hbs" },
+    { "path": "next.config.mjs", "template": "next-js/next.config.mjs.hbs" },
+    { "path": "jsconfig.json", "template": "next-js/jsconfig.json.hbs" },
+    { "path": ".gitignore", "template": "next-js/gitignore.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": { "next": "15.1.3", "react": "19.0.0", "react-dom": "19.0.0" },
+    "devDependencies": {},
+    "scripts": { "dev": "next dev", "build": "next build", "start": "next start" },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Run `pnpm dev` and open http://localhost:3000."]
+}

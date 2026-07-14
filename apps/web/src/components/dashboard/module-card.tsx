@@ -3,7 +3,7 @@
 import { Check } from 'lucide-react';
 import type { ApiModule } from '@/lib/api';
 import { cn } from '@/lib/cn';
-import { categoryMeta } from './module-meta';
+import { moduleMeta } from './module-meta';
 
 interface ModuleCardProps {
   module: ApiModule;
@@ -17,7 +17,7 @@ export function ModuleCard({ module, selected, auto, onToggle }: ModuleCardProps
   // Only the user's explicit picks look "selected". Dependencies get a subtle
   // tag instead, so choosing MongoDB doesn't make Fastify/TypeScript look chosen.
   const active = selected;
-  const meta = categoryMeta(module.category);
+  const meta = moduleMeta(module.id, module.category);
   const Icon = meta.icon;
 
   return (

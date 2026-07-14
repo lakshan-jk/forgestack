@@ -1,0 +1,25 @@
+{
+  "id": "react-js",
+  "name": "React (Vite, JavaScript)",
+  "description": "A React 19 single-page app scaffolded with Vite in plain JavaScript (JSX) — no TypeScript.",
+  "category": "framework",
+  "tags": ["react", "vite", "javascript", "frontend", "spa"],
+  "dependsOn": [],
+  "conflictsWith": ["fastify", "typescript", "nest", "next", "react", "vite", "next-js"],
+  "files": [
+    { "path": "index.html", "template": "react-js/index.html.hbs" },
+    { "path": "src/main.jsx", "template": "react-js/src/main.jsx.hbs" },
+    { "path": "src/App.jsx", "template": "react-js/src/App.jsx.hbs" },
+    { "path": "src/index.css", "template": "react-js/src/index.css.hbs" },
+    { "path": "vite.config.js", "template": "react-js/vite.config.js.hbs" },
+    { "path": ".gitignore", "template": "react-js/gitignore.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": { "react": "19.0.0", "react-dom": "19.0.0" },
+    "devDependencies": { "vite": "^6.0.5", "@vitejs/plugin-react": "^4.3.4" },
+    "scripts": { "dev": "vite", "build": "vite build", "preview": "vite preview" },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Run `pnpm dev` and open http://localhost:5173."]
+}
