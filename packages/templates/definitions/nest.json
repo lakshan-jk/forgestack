@@ -1,0 +1,46 @@
+{
+  "id": "nest",
+  "name": "NestJS",
+  "description": "A NestJS API starter (controllers, providers, DI) — an alternative backend framework to Fastify.",
+  "category": "framework",
+  "tags": ["nestjs", "backend", "api", "typescript"],
+  "dependsOn": [],
+  "conflictsWith": ["fastify", "typescript", "next", "react", "vite"],
+  "files": [
+    { "path": "src/main.ts", "template": "nest/src/main.ts.hbs" },
+    { "path": "src/app.module.ts", "template": "nest/src/app.module.ts.hbs" },
+    { "path": "src/app.controller.ts", "template": "nest/src/app.controller.ts.hbs" },
+    { "path": "src/app.service.ts", "template": "nest/src/app.service.ts.hbs" },
+    { "path": "tsconfig.json", "template": "nest/tsconfig.json.hbs" },
+    { "path": "tsconfig.build.json", "template": "nest/tsconfig.build.json.hbs" },
+    { "path": "nest-cli.json", "template": "nest/nest-cli.json.hbs" },
+    { "path": ".gitignore", "template": "nest/gitignore.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": {
+      "@nestjs/common": "^10.4.15",
+      "@nestjs/core": "^10.4.15",
+      "@nestjs/platform-express": "^10.4.15",
+      "reflect-metadata": "^0.2.2",
+      "rxjs": "^7.8.1"
+    },
+    "devDependencies": {
+      "@nestjs/cli": "^10.4.9",
+      "@nestjs/schematics": "^10.2.3",
+      "@types/express": "^5.0.0",
+      "@types/node": "^22.10.0",
+      "typescript": "^5.7.2"
+    },
+    "scripts": {
+      "dev": "nest start --watch",
+      "build": "nest build",
+      "start": "node dist/main",
+      "typecheck": "tsc --noEmit -p tsconfig.json"
+    },
+    "extra": { "type": "commonjs" }
+  },
+  "env": [
+    { "key": "PORT", "description": "HTTP port", "type": "port", "required": false, "default": "3000" }
+  ],
+  "notes": ["Run `pnpm dev` and open http://localhost:3000 (GET / and GET /health)."]
+}

@@ -1,0 +1,35 @@
+{
+  "id": "next",
+  "name": "Next.js",
+  "description": "A Next.js 15 (App Router) full-stack React starter with TypeScript.",
+  "category": "framework",
+  "tags": ["nextjs", "react", "fullstack", "ssr"],
+  "dependsOn": [],
+  "conflictsWith": ["fastify", "typescript", "nest", "react", "vite"],
+  "files": [
+    { "path": "src/app/layout.tsx", "template": "next/src/app/layout.tsx.hbs" },
+    { "path": "src/app/page.tsx", "template": "next/src/app/page.tsx.hbs" },
+    { "path": "next.config.ts", "template": "next/next.config.ts.hbs" },
+    { "path": "tsconfig.json", "template": "next/tsconfig.json.hbs" },
+    { "path": "next-env.d.ts", "template": "next/next-env.d.ts.hbs" },
+    { "path": ".gitignore", "template": "next/gitignore.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": { "next": "15.1.3", "react": "19.0.0", "react-dom": "19.0.0" },
+    "devDependencies": {
+      "typescript": "^5.7.2",
+      "@types/node": "^22.10.0",
+      "@types/react": "^19.0.2",
+      "@types/react-dom": "^19.0.2"
+    },
+    "scripts": {
+      "dev": "next dev",
+      "build": "next build",
+      "start": "next start",
+      "typecheck": "tsc --noEmit"
+    },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Run `pnpm dev` and open http://localhost:3000."]
+}

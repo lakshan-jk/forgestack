@@ -13,6 +13,7 @@ import { z } from 'zod';
 /** Broad grouping used for UI organisation and ordering heuristics. */
 export const ModuleCategory = z.enum([
   'core', // framework, server bootstrap
+  'framework', // alternative app frameworks (nest, next, react, vite)
   'language', // typescript, build tooling
   'database', // mongoose, prisma, ...
   'auth', // jwt, oauth

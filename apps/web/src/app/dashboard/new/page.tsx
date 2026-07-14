@@ -17,7 +17,7 @@ import { ModuleCard } from '@/components/dashboard/module-card';
 import { AdvisorPanel } from '@/components/dashboard/advisor-panel';
 import { cn } from '@/lib/cn';
 
-const CATEGORY_ORDER = ['language', 'core', 'database', 'cache', 'queue', 'ai', 'auth', 'docs', 'security', 'observability', 'devops', 'quality'];
+const CATEGORY_ORDER = ['framework', 'language', 'core', 'database', 'cache', 'queue', 'ai', 'auth', 'docs', 'security', 'observability', 'devops', 'quality'];
 const PACKAGE_MANAGERS = ['pnpm', 'npm', 'yarn'] as const;
 
 export default function DashboardPage() {

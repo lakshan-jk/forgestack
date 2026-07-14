@@ -1,0 +1,30 @@
+{
+  "id": "vite",
+  "name": "Vite (vanilla TS)",
+  "description": "A minimal Vite + TypeScript single-page app with no UI framework.",
+  "category": "framework",
+  "tags": ["vite", "typescript", "frontend"],
+  "dependsOn": [],
+  "conflictsWith": ["fastify", "typescript", "nest", "next", "react"],
+  "files": [
+    { "path": "index.html", "template": "vite/index.html.hbs" },
+    { "path": "src/main.ts", "template": "vite/src/main.ts.hbs" },
+    { "path": "src/style.css", "template": "vite/src/style.css.hbs" },
+    { "path": "vite.config.ts", "template": "vite/vite.config.ts.hbs" },
+    { "path": "tsconfig.json", "template": "vite/tsconfig.json.hbs" },
+    { "path": ".gitignore", "template": "vite/gitignore.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": {},
+    "devDependencies": { "vite": "^6.0.5", "typescript": "^5.7.2" },
+    "scripts": {
+      "dev": "vite",
+      "build": "tsc --noEmit && vite build",
+      "preview": "vite preview",
+      "typecheck": "tsc --noEmit"
+    },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Run `pnpm dev` and open http://localhost:5173."]
+}

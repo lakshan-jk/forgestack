@@ -4,6 +4,7 @@ import { API_URL, type ApiModule } from '@/lib/api';
 import { categoryMeta } from '@/components/dashboard/module-meta';
 
 const CATEGORY_ORDER = [
+  'framework',
   'language',
   'core',
   'database',

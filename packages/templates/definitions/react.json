@@ -1,0 +1,37 @@
+{
+  "id": "react",
+  "name": "React (Vite)",
+  "description": "A React 19 single-page app scaffolded with Vite and TypeScript.",
+  "category": "framework",
+  "tags": ["react", "vite", "frontend", "spa"],
+  "dependsOn": [],
+  "conflictsWith": ["fastify", "typescript", "nest", "next", "vite"],
+  "files": [
+    { "path": "index.html", "template": "react/index.html.hbs" },
+    { "path": "src/main.tsx", "template": "react/src/main.tsx.hbs" },
+    { "path": "src/App.tsx", "template": "react/src/App.tsx.hbs" },
+    { "path": "src/index.css", "template": "react/src/index.css.hbs" },
+    { "path": "vite.config.ts", "template": "react/vite.config.ts.hbs" },
+    { "path": "tsconfig.json", "template": "react/tsconfig.json.hbs" },
+    { "path": ".gitignore", "template": "react/gitignore.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": { "react": "19.0.0", "react-dom": "19.0.0" },
+    "devDependencies": {
+      "vite": "^6.0.5",
+      "@vitejs/plugin-react": "^4.3.4",
+      "typescript": "^5.7.2",
+      "@types/react": "^19.0.2",
+      "@types/react-dom": "^19.0.2"
+    },
+    "scripts": {
+      "dev": "vite",
+      "build": "tsc --noEmit && vite build",
+      "preview": "vite preview",
+      "typecheck": "tsc --noEmit"
+    },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Run `pnpm dev` and open http://localhost:5173."]
+}

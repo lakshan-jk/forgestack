@@ -10,6 +10,7 @@ import {
   ShieldCheck,
   Container,
   Wrench,
+  Component,
   type LucideIcon,
 } from 'lucide-react';
 
@@ -20,6 +21,7 @@ export interface CategoryMeta {
 
 /** Shared icon + accent per module category, used by the builder and templates. */
 const CATEGORY: Record<string, CategoryMeta> = {
+  framework: { icon: Component, color: '#ff85c0' },
   language: { icon: FileCode2, color: '#4f9dff' },
   core: { icon: Server, color: '#8b7cff' },
   database: { icon: Database, color: '#3fd07f' },
