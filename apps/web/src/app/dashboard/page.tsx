@@ -1,5 +1,5 @@
 import Link from 'next/link';
-import { Plus, Boxes, ArrowRight } from 'lucide-react';
+import { Plus, Boxes, ArrowRight, Github } from 'lucide-react';
 import { auth } from '@/auth';
 import { API_URL } from '@/lib/api';
 
@@ -31,7 +31,7 @@ export default async function OverviewPage() {
       <div className="grid gap-4 sm:grid-cols-3">
         <Stat label="Modules available" value={moduleCount || '—'} icon={Boxes} />
         <Stat label="Projects generated" value="—" icon={Plus} hint="Not persisted yet" />
-        <Stat label="Plan" value="Free" icon={ArrowRight} />
+        <Stat label="License" value="MIT" icon={Github} hint="Free & open source" />
       </div>
 
       <Link

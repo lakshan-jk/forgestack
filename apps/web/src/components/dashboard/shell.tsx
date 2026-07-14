@@ -3,7 +3,7 @@
 import type { ReactNode } from 'react';
 import Link from 'next/link';
 import { usePathname } from 'next/navigation';
-import { LayoutDashboard, Plus, Boxes, BarChart3, Settings, CreditCard } from 'lucide-react';
+import { LayoutDashboard, Plus, Boxes, BarChart3, Settings } from 'lucide-react';
 import { cn } from '@/lib/cn';
 import { SignOutButton } from './sign-out-button';
 
@@ -13,7 +13,6 @@ const NAV = [
   { href: '/dashboard/templates', label: 'Templates', icon: Boxes, exact: false, adminOnly: false },
   { href: '/dashboard/metrics', label: 'Metrics', icon: BarChart3, exact: false, adminOnly: true },
   { href: '/dashboard/settings', label: 'Settings', icon: Settings, exact: false, adminOnly: false },
-  { href: '/dashboard/billing', label: 'Billing', icon: CreditCard, exact: false, adminOnly: false },
 ] as const;
 
 interface ShellProps {
