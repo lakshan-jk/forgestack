@@ -1,0 +1,30 @@
+import { env } from '../config/env.js';
+
+export interface ChatMessage {
+  role: 'system' | 'user' | 'assistant';
+  content: string;
+}
+
+/** Chat completion via the local Ollama server. */
+export async function chat(messages: ChatMessage[]): Promise<string> {
+  const res = await fetch(`${env.OLLAMA_URL}/api/chat`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: env.OLLAMA_MODEL, messages, stream: false }),
+  });
+  if (!res.ok) throw new Error(`Ollama chat failed (${res.status}): ${await res.text()}`);
+  const data = (await res.json()) as { message: { content: string } };
+  return data.message.content;
+}
+
+/** Embed a single string into a vector. */
+export async function embed(text: string): Promise<number[]> {
+  const res = await fetch(`${env.OLLAMA_URL}/api/embeddings`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ model: env.OLLAMA_EMBED_MODEL, prompt: text }),
+  });
+  if (!res.ok) throw new Error(`Ollama embeddings failed (${res.status}): ${await res.text()}`);
+  const data = (await res.json()) as { embedding: number[] };
+  return data.embedding;
+}

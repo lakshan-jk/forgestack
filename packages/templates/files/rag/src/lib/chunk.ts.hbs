@@ -1,0 +1,13 @@
+/** Splits text into overlapping chunks for embedding. */
+export function chunkText(text: string, size = 500, overlap = 50): string[] {
+  const clean = text.trim();
+  if (clean.length <= size) return clean ? [clean] : [];
+
+  const chunks: string[] = [];
+  const step = Math.max(1, size - overlap);
+  for (let i = 0; i < clean.length; i += step) {
+    chunks.push(clean.slice(i, i + size));
+    if (i + size >= clean.length) break;
+  }
+  return chunks;
+}

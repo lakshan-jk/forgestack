@@ -1,0 +1,23 @@
+{
+  "id": "ollama",
+  "name": "Ollama (local LLM)",
+  "description": "Local LLM chat and embeddings via Ollama — fully open-source, runs on your machine with no API keys. Exposes POST /ai/chat.",
+  "category": "ai",
+  "tags": ["ai", "llm", "ollama", "embeddings", "chat"],
+  "dependsOn": ["fastify"],
+  "provides": ["llm", "embeddings"],
+  "files": [
+    { "path": "src/lib/ollama.ts", "template": "ollama/src/lib/ollama.ts.hbs" },
+    { "path": "src/modules/ai/ai.route.ts", "template": "ollama/src/modules/ai/ai.route.ts.hbs" }
+  ],
+  "packageJson": { "dependencies": {}, "devDependencies": {}, "scripts": {}, "extra": {} },
+  "env": [
+    { "key": "OLLAMA_URL", "description": "Ollama server URL", "type": "string", "required": false, "default": "http://localhost:11434" },
+    { "key": "OLLAMA_MODEL", "description": "Chat model", "type": "string", "required": false, "default": "llama3.2" },
+    { "key": "OLLAMA_EMBED_MODEL", "description": "Embedding model", "type": "string", "required": false, "default": "nomic-embed-text" }
+  ],
+  "notes": [
+    "Install Ollama (https://ollama.com), then: `ollama pull llama3.2 && ollama pull nomic-embed-text`.",
+    "Chat: POST /ai/chat { \"message\": \"hello\" }."
+  ]
+}

@@ -1,0 +1,17 @@
+import fp from 'fastify-plugin';
+import { qdrant } from '../lib/qdrant.js';
+import { env } from '../config/env.js';
+
+/** Ensures the Qdrant collection exists on boot. */
+export default fp(async (app) => {
+  const { collections } = await qdrant.getCollections();
+  const exists = collections.some((c) => c.name === env.QDRANT_COLLECTION);
+  if (!exists) {
+    await qdrant.createCollection(env.QDRANT_COLLECTION, {
+      vectors: { size: env.QDRANT_VECTOR_SIZE, distance: 'Cosine' },
+    });
+    app.log.info(`Qdrant collection "${env.QDRANT_COLLECTION}" created`);
+  } else {
+    app.log.info(`Qdrant collection "${env.QDRANT_COLLECTION}" ready`);
+  }
+});

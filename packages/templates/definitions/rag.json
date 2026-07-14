@@ -1,0 +1,20 @@
+{
+  "id": "rag",
+  "name": "RAG pipeline",
+  "description": "Retrieval-Augmented Generation: ingest text (chunk → embed → store) and answer questions grounded in it (embed → search → generate). Composes Qdrant + Ollama.",
+  "category": "ai",
+  "tags": ["ai", "rag", "retrieval", "embeddings", "llm"],
+  "dependsOn": ["qdrant", "ollama"],
+  "provides": ["rag"],
+  "files": [
+    { "path": "src/lib/chunk.ts", "template": "rag/src/lib/chunk.ts.hbs" },
+    { "path": "src/modules/rag/rag.route.ts", "template": "rag/src/modules/rag/rag.route.ts.hbs" }
+  ],
+  "packageJson": { "dependencies": {}, "devDependencies": {}, "scripts": {}, "extra": {} },
+  "env": [],
+  "notes": [
+    "Ingest: POST /rag/ingest { \"text\": \"...\", \"source\": \"docs\" }.",
+    "Ask: POST /rag/query { \"question\": \"...\" } → grounded answer + sources.",
+    "Requires Ollama + Qdrant running (see their notes). QDRANT_VECTOR_SIZE must match the embed model (nomic-embed-text = 768)."
+  ]
+}

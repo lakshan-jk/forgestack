@@ -18,6 +18,7 @@ export const ModuleCategory = z.enum([
   'auth', // jwt, oauth
   'cache', // redis
   'queue', // bullmq
+  'ai', // llm, embeddings, vector store, rag
   'docs', // swagger
   'observability', // pino, health checks, metrics
   'security', // helmet, cors, rate-limit

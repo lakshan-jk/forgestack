@@ -1,0 +1,26 @@
+{
+  "id": "qdrant",
+  "name": "Qdrant (vector DB)",
+  "description": "Qdrant vector database client managed as a Fastify plugin; ensures the collection exists on boot. Open-source, self-hostable.",
+  "category": "ai",
+  "tags": ["ai", "vector", "qdrant", "embeddings", "search"],
+  "dependsOn": ["fastify"],
+  "provides": ["vector-store"],
+  "files": [
+    { "path": "src/lib/qdrant.ts", "template": "qdrant/src/lib/qdrant.ts.hbs" },
+    { "path": "src/plugins/qdrant.ts", "template": "qdrant/src/plugins/qdrant.ts.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": { "@qdrant/js-client-rest": "^1.12.0" },
+    "devDependencies": {},
+    "scripts": {},
+    "extra": {}
+  },
+  "env": [
+    { "key": "QDRANT_URL", "description": "Qdrant server URL", "type": "string", "required": false, "default": "http://localhost:6333" },
+    { "key": "QDRANT_API_KEY", "description": "Qdrant API key (optional, for cloud)", "type": "string", "required": false, "secret": true },
+    { "key": "QDRANT_COLLECTION", "description": "Collection name", "type": "string", "required": false, "default": "documents" },
+    { "key": "QDRANT_VECTOR_SIZE", "description": "Embedding dimensions (nomic-embed-text = 768)", "type": "number", "required": false, "default": "768" }
+  ],
+  "notes": ["Run Qdrant locally: `docker run -p 6333:6333 qdrant/qdrant`."]
+}
