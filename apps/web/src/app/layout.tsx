@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import { Providers } from '@/components/providers';
+import { Analytics } from '@/components/analytics';
 
 export const metadata: Metadata = {
   title: 'ForgeStack — Production backends, generated',
@@ -15,6 +16,7 @@ export default function RootLayout({
     <html lang="en">
       <body className="min-h-screen antialiased">
         <Providers>{children}</Providers>
+        <Analytics />
       </body>
     </html>
   );

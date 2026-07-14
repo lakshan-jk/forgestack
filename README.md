@@ -50,10 +50,25 @@ GenerationRequest ─▶ Resolver ─▶ Composer ─▶ Emitter ─▶ ZIP
 ## Milestones
 
 - [x] **M1** — Monorepo foundation (workspace, contracts, resolver, booting apps)
-- [ ] **M2** — Generator engine + templates package (composer, emitter, module JSON)
-- [ ] **M3** — ZIP generation + API endpoint (first Fastify + TS + MongoDB output)
-- [ ] **M4** — Auth (Auth.js v5) + dashboard layout
-- [ ] **M5** — Generate UI, project/template management, billing placeholder
+- [x] **M2** — Generator engine + templates (13 modules: Fastify, TS, MongoDB, Redis, BullMQ, JWT, Swagger, Docker, CI, ESLint, Prettier, Husky, Commitlint)
+- [x] **M3** — ZIP generation + API endpoint
+- [x] **M4** — Auth (Auth.js v5) + dashboard shell
+- [x] **M5** — Generate UI (stack builder → download)
+- [x] **M6** — AI Stack Advisor (HuggingFace embeddings + vector search)
+- [x] **M7** — Usage analytics (anonymous telemetry, persisted metrics, admin dashboard)
+
+## Telemetry & Privacy
+
+ForgeStack collects **anonymous, aggregate** usage data (which modules get
+generated, that the advisor ran) to understand adoption — no accounts, IPs,
+project names, or prompts. It is **opt-out** with a single flag:
+
+```bash
+FORGESTACK_TELEMETRY_DISABLED=1
+```
+
+Web analytics is **off** unless you configure a self-hosted Umami/Plausible.
+Full details: [`docs/telemetry.md`](docs/telemetry.md).
 
 ## License
 
