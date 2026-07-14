@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 import Link from 'next/link';
 import { signIn } from 'next-auth/react';
 import { Loader2, ArrowRight } from 'lucide-react';
+import { CodeBackground } from '@/components/three/code-background';
 
 export default function SignInPage() {
   const router = useRouter();
@@ -28,7 +29,8 @@ export default function SignInPage() {
   }
 
   return (
-    <main className="grid min-h-screen place-items-center px-6">
+    <main className="relative grid min-h-screen place-items-center px-6">
+      <CodeBackground />
       <div className="w-full max-w-sm">
         <Link href="/" className="mb-8 flex items-center gap-2">
           <div className="grid size-7 place-items-center rounded-md bg-[var(--color-accent)] text-sm font-bold text-[var(--color-accent-fg)]">

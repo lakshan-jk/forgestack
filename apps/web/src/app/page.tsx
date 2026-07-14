@@ -1,3 +1,6 @@
+import { StackHeroCanvas } from '@/components/landing/stack-hero-canvas';
+import { CodeBackground } from '@/components/three/code-background';
+
 const STACK = [
   'Fastify',
   'TypeScript',
@@ -14,6 +17,7 @@ const STACK = [
 export default function HomePage() {
   return (
     <main className="relative isolate overflow-hidden">
+      <CodeBackground />
       <div className="bg-grid absolute inset-0 -z-10 [mask-image:radial-gradient(ellipse_at_top,black,transparent_70%)]" />
 
       <header className="mx-auto flex max-w-6xl items-center justify-between px-6 py-6">
@@ -69,6 +73,10 @@ export default function HomePage() {
           </a>
         </div>
       </section>
+
+      <div className="mx-auto -mt-8 mb-10 w-full max-w-4xl px-6">
+        <StackHeroCanvas />
+      </div>
 
       <section id="stack" className="mx-auto max-w-4xl px-6 pb-28">
         <p className="mb-4 text-center text-xs uppercase tracking-widest text-[var(--color-fg-muted)]">

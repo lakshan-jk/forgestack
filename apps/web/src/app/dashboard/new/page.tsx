@@ -99,7 +99,12 @@ export default function DashboardPage() {
           />
 
           <section>
-            <h2 className="mb-3 text-sm font-medium text-[var(--color-fg)]">Modules</h2>
+            <div className="mb-3 flex items-baseline justify-between">
+              <h2 className="text-sm font-medium text-[var(--color-fg)]">Modules</h2>
+              <span className="text-xs text-[var(--color-fg-muted)]">
+                {selectedSet.size} selected
+              </span>
+            </div>
             {modulesQuery.isLoading && <SkeletonList />}
             {modulesQuery.isError && (
               <Notice tone="error">
@@ -110,13 +115,17 @@ export default function DashboardPage() {
             {formState.errors.modules && (
               <p className="mb-3 text-sm text-red-400">{formState.errors.modules.message}</p>
             )}
-            <div className="space-y-6">
+            <div className="space-y-5">
               {grouped.map(([category, mods]) => (
                 <div key={category}>
-                  <p className="mb-2 text-xs uppercase tracking-widest text-[var(--color-fg-muted)]">
-                    {category}
-                  </p>
-                  <div className="grid gap-2 sm:grid-cols-2">
+                  <div className="mb-2 flex items-center gap-2">
+                    <p className="text-[11px] font-semibold uppercase tracking-widest text-[var(--color-fg-muted)]">
+                      {category}
+                    </p>
+                    <span className="text-[11px] text-[var(--color-fg-muted)]/60">{mods.length}</span>
+                    <div className="ml-1 h-px flex-1 bg-[var(--color-border)]" />
+                  </div>
+                  <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
                     {mods.map((m) => (
                       <ModuleCard
                         key={m.id}

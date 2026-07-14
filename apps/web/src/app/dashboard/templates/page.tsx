@@ -1,6 +1,22 @@
 import Link from 'next/link';
 import { ArrowRight } from 'lucide-react';
 import { API_URL, type ApiModule } from '@/lib/api';
+import { categoryMeta } from '@/components/dashboard/module-meta';
+
+const CATEGORY_ORDER = [
+  'language',
+  'core',
+  'database',
+  'cache',
+  'queue',
+  'ai',
+  'auth',
+  'docs',
+  'security',
+  'observability',
+  'devops',
+  'quality',
+];
 
 async function getModules(): Promise<ApiModule[]> {
   try {
@@ -13,18 +29,24 @@ async function getModules(): Promise<ApiModule[]> {
   }
 }
 
+function orderIndex(category: string): number {
+  const i = CATEGORY_ORDER.indexOf(category);
+  return i === -1 ? CATEGORY_ORDER.length : i;
+}
+
 export default async function TemplatesPage() {
   const modules = await getModules();
-  const byCategory = new Map<string, ApiModule[]>();
+  const groups = new Map<string, ApiModule[]>();
   for (const m of modules) {
-    const list = byCategory.get(m.category) ?? [];
+    const list = groups.get(m.category) ?? [];
     list.push(m);
-    byCategory.set(m.category, list);
+    groups.set(m.category, list);
   }
+  const ordered = [...groups.entries()].sort(([a], [b]) => orderIndex(a) - orderIndex(b));
 
   return (
-    <div className="mx-auto max-w-5xl px-6 py-10">
-      <header className="mb-8 flex items-end justify-between">
+    <div className="mx-auto max-w-5xl px-6 py-8">
+      <header className="mb-8 flex items-end justify-between gap-4">
         <div>
           <h1 className="text-2xl font-semibold tracking-tight">Templates</h1>
           <p className="mt-1 text-[var(--color-fg-muted)]">
@@ -33,7 +55,7 @@ export default async function TemplatesPage() {
         </div>
         <Link
           href="/dashboard/new"
-          className="inline-flex items-center gap-1.5 rounded-md bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-accent-fg)] transition-opacity hover:opacity-90"
+          className="inline-flex shrink-0 items-center gap-1.5 rounded-md bg-[var(--color-accent)] px-4 py-2 text-sm font-medium text-[var(--color-accent-fg)] transition-opacity hover:opacity-90"
         >
           Build a stack <ArrowRight className="size-4" />
         </Link>
@@ -46,37 +68,49 @@ export default async function TemplatesPage() {
         </div>
       )}
 
-      <div className="space-y-8">
-        {[...byCategory.entries()].map(([category, mods]) => (
+      <div className="space-y-5">
+        {ordered.map(([category, mods]) => (
           <section key={category}>
-            <h2 className="mb-3 text-xs uppercase tracking-widest text-[var(--color-fg-muted)]">
-              {category}
-            </h2>
-            <div className="grid gap-2 sm:grid-cols-2">
+            <div className="mb-2 flex items-center gap-2">
+              <p className="text-[11px] font-semibold uppercase tracking-widest text-[var(--color-fg-muted)]">
+                {category}
+              </p>
+              <span className="text-[11px] text-[var(--color-fg-muted)]/60">{mods.length}</span>
+              <div className="ml-1 h-px flex-1 bg-[var(--color-border)]" />
+            </div>
+            <div className="grid grid-cols-1 gap-2 sm:grid-cols-2">
               {mods.map((m) => (
-                <div
-                  key={m.id}
-                  className="rounded-lg border border-[var(--color-border)] bg-[var(--color-surface)] p-4"
-                >
-                  <div className="flex items-center gap-2">
-                    <span className="font-medium">{m.name}</span>
-                    {m.required && (
-                      <span className="rounded bg-[var(--color-surface-2)] px-1.5 py-0.5 text-[10px] uppercase tracking-wide text-[var(--color-fg-muted)]">
-                        required
-                      </span>
-                    )}
-                  </div>
-                  <p className="mt-1 text-sm text-[var(--color-fg-muted)]">{m.description}</p>
-                  {m.dependsOn.length > 0 && (
-                    <p className="mt-2 font-mono text-xs text-[var(--color-fg-muted)]">
-                      depends on: {m.dependsOn.join(', ')}
-                    </p>
-                  )}
-                </div>
+                <TemplateCard key={m.id} module={m} />
               ))}
             </div>
           </section>
         ))}
+      </div>
+    </div>
+  );
+}
+
+function TemplateCard({ module }: { module: ApiModule }) {
+  const meta = categoryMeta(module.category);
+  const Icon = meta.icon;
+  return (
+    <div className="flex min-h-[76px] items-start gap-3 rounded-xl border border-[var(--color-border)] bg-[var(--color-surface)] p-3.5">
+      <span
+        className="mt-0.5 grid size-9 shrink-0 place-items-center rounded-lg"
+        style={{ backgroundColor: `${meta.color}1a`, color: meta.color }}
+      >
+        <Icon className="size-[18px]" />
+      </span>
+      <div className="min-w-0 flex-1">
+        <p className="truncate font-medium text-[var(--color-fg)]">{module.name}</p>
+        <p className="mt-1 line-clamp-2 text-[13px] leading-snug text-[var(--color-fg-muted)]">
+          {module.description}
+        </p>
+        {module.dependsOn.length > 0 && (
+          <p className="mt-1.5 truncate font-mono text-[11px] text-[var(--color-fg-muted)]/70">
+            ↳ needs {module.dependsOn.join(', ')}
+          </p>
+        )}
       </div>
     </div>
   );
