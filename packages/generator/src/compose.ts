@@ -1,5 +1,6 @@
 import type {
   EnvVarSpec,
+  FileMergeStrategy,
   GeneratedFile,
   GenerationRequest,
   GenerationResult,
@@ -32,19 +33,39 @@ export function compose(input: ComposeInput): GenerationResult {
   const context = buildContext(request, ordered);
 
   const fileMap = new Map<string, TrackedFile>();
+  const resolvedIds = new Set(ordered.map((m) => m.module.id));
 
-  for (const { module } of ordered) {
-    for (const spec of module.files) {
-      // `when` gate — only emit the file when the named option is truthy.
-      if (spec.when && !isTruthyOption(request.options[spec.when])) continue;
+  // Two passes so modifications (prepend/append) always apply on top of the base
+  // files, regardless of module order — e.g. Tailwind prepending its import to a
+  // framework's entry stylesheet after that file has been written.
+  const isModification = (m: string) => m === 'prepend' || m === 'append';
 
-      const raw = resolveRawContent(spec, templates, module.id);
-      const content = render(raw, context);
-      const path = render(spec.path, context);
+  const emit = (accept: (merge: string) => boolean) => {
+    for (const { module } of ordered) {
+      for (const spec of module.files) {
+        if (!accept(spec.merge)) continue;
+        // `when` gate — only emit when the named option is truthy.
+        if (spec.when && !isTruthyOption(request.options[spec.when])) continue;
+        // `whenModule` gate — only emit when the named module is in the stack.
+        if (spec.whenModule && !resolvedIds.has(spec.whenModule)) continue;
 
-      applyFile(fileMap, { path, content, executable: spec.executable }, spec.merge, module.id, warnings);
+        const raw = resolveRawContent(spec, templates, module.id);
+        const content = render(raw, context);
+        const path = render(spec.path, context);
+
+        applyFile(
+          fileMap,
+          { path, content, executable: spec.executable },
+          spec.merge,
+          module.id,
+          warnings,
+        );
+      }
     }
-  }
+  };
+
+  emit((m) => !isModification(m)); // base files
+  emit((m) => isModification(m)); // prepend/append on top
 
   // Synthesized, always-present files.
   const pkg = synthesizePackageJson(request, ordered, warnings);
@@ -167,12 +188,13 @@ function resolveRawContent(
 function applyFile(
   fileMap: Map<string, TrackedFile>,
   file: GeneratedFile,
-  merge: 'overwrite' | 'skip-if-exists' | 'error',
+  merge: FileMergeStrategy,
   moduleId: string,
   warnings: string[],
 ): void {
   const existing = fileMap.get(file.path);
   if (!existing) {
+    // Nothing to merge into — prepend/append just create the file.
     fileMap.set(file.path, { file, writtenBy: moduleId });
     return;
   }
@@ -189,6 +211,18 @@ function applyFile(
       break;
     case 'error':
       throw new FileCollisionError(file.path, existing.writtenBy, moduleId);
+    case 'prepend':
+      fileMap.set(file.path, {
+        file: { ...existing.file, content: file.content + existing.file.content },
+        writtenBy: existing.writtenBy,
+      });
+      break;
+    case 'append':
+      fileMap.set(file.path, {
+        file: { ...existing.file, content: existing.file.content + file.content },
+        writtenBy: existing.writtenBy,
+      });
+      break;
   }
 }
 

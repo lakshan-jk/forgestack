@@ -1,14 +1,17 @@
 {
   "id": "tailwind",
   "name": "Tailwind CSS",
-  "description": "Tailwind CSS v4 via PostCSS — works with React, Next.js or Vite. Requires one of them.",
+  "description": "Tailwind CSS v4 via PostCSS — fully wired into React, Next.js or Vite. Requires one of them.",
   "category": "ui",
   "tags": ["tailwind", "css", "styling", "frontend"],
   "dependsOn": [],
   "requiresOneOf": ["react", "next", "vite"],
   "files": [
     { "path": "postcss.config.mjs", "template": "tailwind/postcss.config.mjs.hbs" },
-    { "path": "src/tailwind.css", "template": "tailwind/tailwind.css.hbs" }
+    { "path": "src/index.css", "content": "@import 'tailwindcss';\n\n", "merge": "prepend", "whenModule": "react" },
+    { "path": "src/style.css", "content": "@import 'tailwindcss';\n\n", "merge": "prepend", "whenModule": "vite" },
+    { "path": "src/app/globals.css", "content": "@import 'tailwindcss';\n", "whenModule": "next" },
+    { "path": "src/app/layout.tsx", "content": "import './globals.css';\n", "merge": "prepend", "whenModule": "next" }
   ],
   "packageJson": {
     "dependencies": {},
@@ -20,8 +23,5 @@
     "extra": {}
   },
   "env": [],
-  "notes": [
-    "Import `src/tailwind.css` from your entry (main.tsx / layout.tsx) to enable utilities.",
-    "PostCSS applies Tailwind automatically for Vite and Next."
-  ]
+  "notes": ["Tailwind is wired in automatically — add utility classes and go."]
 }

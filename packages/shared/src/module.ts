@@ -51,6 +51,8 @@ export const FileMergeStrategy = z.enum([
   'overwrite', // last module wins (default)
   'skip-if-exists', // first module wins; later modules are ignored
   'error', // collision is a hard failure (used for files that must be unique)
+  'prepend', // insert this content at the TOP of an existing file (e.g. a CSS/JS import)
+  'append', // insert this content at the BOTTOM of an existing file
 ]);
 export type FileMergeStrategy = z.infer<typeof FileMergeStrategy>;
 
@@ -77,6 +79,13 @@ export const FileSpec = z.object({
    * truthy in the generation request's `options`. Enables intra-module choices.
    */
   when: z.string().optional(),
+  /**
+   * Optional gate — the file is only emitted when the named module id is present
+   * in the resolved set. Lets a cross-framework module target the right entry
+   * file per framework (e.g. Tailwind prepends its import to react's index.css
+   * only when react is selected).
+   */
+  whenModule: z.string().optional(),
 });
 export type FileSpec = z.infer<typeof FileSpec>;
 
