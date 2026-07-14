@@ -1,0 +1,4 @@
+import { PrismaClient } from '@prisma/client';
+
+/** Shared Prisma client, reused across plugins and routes. */
+export const prisma = new PrismaClient();

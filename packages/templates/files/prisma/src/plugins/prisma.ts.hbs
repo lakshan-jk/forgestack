@@ -1,0 +1,13 @@
+import fp from 'fastify-plugin';
+import { prisma } from '../lib/prisma.js';
+
+/** Connects Prisma on boot and disconnects on graceful shutdown. */
+export default fp(async (app) => {
+  await prisma.$connect();
+  app.log.info('Prisma connected');
+
+  app.addHook('onClose', async () => {
+    await prisma.$disconnect();
+    app.log.info('Prisma disconnected');
+  });
+});

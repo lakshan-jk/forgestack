@@ -1,0 +1,25 @@
+{
+  "id": "vitest",
+  "name": "Vitest",
+  "description": "Vitest test runner with a sample test that exercises the health route via Fastify's inject — no running server or database needed.",
+  "category": "quality",
+  "tags": ["vitest", "testing", "tests"],
+  "dependsOn": ["fastify"],
+  "provides": ["tests"],
+  "files": [
+    { "path": "vitest.config.ts", "template": "vitest/vitest.config.ts.hbs" },
+    { "path": "src/app.test.ts", "template": "vitest/src/app.test.ts.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": {},
+    "devDependencies": { "vitest": "^2.1.8" },
+    "scripts": {
+      "test": "vitest run",
+      "test:watch": "vitest",
+      "test:coverage": "vitest run --coverage"
+    },
+    "extra": {}
+  },
+  "env": [],
+  "notes": ["Run `pnpm test`. Add `*.test.ts` files under `src/` and they're picked up."]
+}

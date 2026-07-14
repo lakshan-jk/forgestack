@@ -1,0 +1,21 @@
+import type { FastifyInstance } from 'fastify';
+import { z } from 'zod';
+import { prisma } from '../../lib/prisma.js';
+
+const createUserBody = z.object({
+  email: z.string().email(),
+  name: z.string().min(1),
+});
+
+/** Sample CRUD route backed by Prisma, autoloaded via the `*.route.ts` convention. */
+export default async function usersRoute(app: FastifyInstance): Promise<void> {
+  app.get('/users', async () => {
+    return prisma.user.findMany();
+  });
+
+  app.post('/users', async (request, reply) => {
+    const data = createUserBody.parse(request.body);
+    const user = await prisma.user.create({ data });
+    return reply.code(201).send(user);
+  });
+}

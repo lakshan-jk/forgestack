@@ -10,6 +10,7 @@ services:
 {{#if moduleFlags.mongodb}}      MONGODB_URI: mongodb://mongo:27017/{{projectName}}
 {{/if}}{{#if moduleFlags.redis}}      REDIS_URL: redis://redis:6379
 {{/if}}{{#if moduleFlags.qdrant}}      QDRANT_URL: http://qdrant:6333
+{{/if}}{{#if moduleFlags.prisma}}      DATABASE_URL: postgresql://postgres:postgres@postgres:5432/{{projectName}}
 {{/if}}{{#if moduleFlags.mongodb}}    depends_on:
       - mongo
 {{#if moduleFlags.redis}}      - redis
@@ -35,6 +36,15 @@ services:
     restart: unless-stopped
     ports:
       - '6333:6333'
+
+{{/if}}{{#if moduleFlags.prisma}}  postgres:
+    image: postgres:17-alpine
+    restart: unless-stopped
+    environment:
+      POSTGRES_PASSWORD: postgres
+      POSTGRES_DB: {{projectName}}
+    ports:
+      - '5432:5432'
 
 {{/if}}{{#if moduleFlags.mongodb}}volumes:
   mongo-data:

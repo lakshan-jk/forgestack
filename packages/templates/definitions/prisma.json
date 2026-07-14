@@ -1,0 +1,39 @@
+{
+  "id": "prisma",
+  "name": "PostgreSQL (Prisma)",
+  "description": "PostgreSQL access via Prisma ORM — schema, typed client as a Fastify plugin, and a sample User model with CRUD routes.",
+  "category": "database",
+  "tags": ["postgres", "postgresql", "prisma", "database", "sql"],
+  "dependsOn": ["fastify"],
+  "conflictsWith": ["mongodb"],
+  "provides": ["database"],
+  "files": [
+    { "path": "prisma/schema.prisma", "template": "prisma/schema.prisma.hbs" },
+    { "path": "src/lib/prisma.ts", "template": "prisma/src/lib/prisma.ts.hbs" },
+    { "path": "src/plugins/prisma.ts", "template": "prisma/src/plugins/prisma.ts.hbs" },
+    { "path": "src/modules/users/users.route.ts", "template": "prisma/src/modules/users/users.route.ts.hbs" }
+  ],
+  "packageJson": {
+    "dependencies": { "@prisma/client": "^6.2.1" },
+    "devDependencies": { "prisma": "^6.2.1" },
+    "scripts": {
+      "postinstall": "prisma generate",
+      "db:push": "prisma db push",
+      "db:generate": "prisma generate"
+    },
+    "extra": {}
+  },
+  "env": [
+    {
+      "key": "DATABASE_URL",
+      "description": "PostgreSQL connection string",
+      "type": "string",
+      "required": true,
+      "example": "postgresql://postgres:postgres@localhost:5432/app"
+    }
+  ],
+  "notes": [
+    "Create tables: `pnpm db:push`. Run Postgres locally: `docker run -e POSTGRES_PASSWORD=postgres -p 5432:5432 postgres:17`.",
+    "Sample endpoints: GET /users, POST /users."
+  ]
+}
